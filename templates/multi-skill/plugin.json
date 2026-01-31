@@ -1,0 +1,12 @@
+{
+  "name": "my-multi-skill-plugin",
+  "version": "0.1.0",
+  "description": "Plugin with multiple related skills",
+  "author": {
+    "name": "Your Name",
+    "email": "your@email.com"
+  },
+  "license": "MIT",
+  "keywords": [],
+  "category": "utilities"
+}
