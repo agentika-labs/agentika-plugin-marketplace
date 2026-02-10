@@ -8,26 +8,24 @@ A curated collection of AI agent plugins for Claude Code and compatible agents.
 
 ```bash
 # Using npx (recommended)
-npx add-skill agentika/plugin-marketplace/plugins/<category>/<plugin-name>
+npx add-skill agentika-labs/agentika-plugin-marketplace/plugins/<plugin-name>
 
 # Manual installation
-cp -r plugins/<category>/<plugin-name> ~/.claude/skills/
+cp -r plugins/<plugin-name> ~/.claude/skills/
 
 # Session-only (temporary)
-claude --plugin-dir ./plugins/<category>/<plugin-name>
+claude --plugin-dir ./plugins/<plugin-name>
 ```
 
-## Categories
+## Plugins
 
-| Category | Description |
-|----------|-------------|
-| [ai-integration](plugins/ai-integration/) | LLM and AI service integrations (OpenAI, Anthropic, xAI, etc.) |
-| [database](plugins/database/) | Database clients and ORMs (PostgreSQL, Supabase, MongoDB, etc.) |
-| [api-services](plugins/api-services/) | Third-party API integrations (Stripe, Twilio, SendGrid, etc.) |
-| [devops](plugins/devops/) | Deployment and infrastructure (Docker, Kubernetes, Terraform, etc.) |
-| [testing](plugins/testing/) | Testing frameworks and utilities (Playwright, Vitest, Jest, etc.) |
-| [ui-frameworks](plugins/ui-frameworks/) | UI components and design systems (React, Vue, Tailwind, etc.) |
-| [utilities](plugins/utilities/) | General-purpose utilities and helpers |
+Plugins live directly under `plugins/`:
+
+| Plugin | Category | Description |
+|--------|----------|-------------|
+| [grepika](plugins/grepika/) | utilities | Token-efficient codebase exploration with trigram indexing |
+
+Categories are declared in each plugin's `plugin.json`, not as filesystem directories.
 
 ## Plugin Structure
 
@@ -36,11 +34,11 @@ Each plugin follows this structure:
 ```
 my-plugin/
 ├── plugin.json           # Plugin metadata
+├── agents/               # Optional: Agent definitions
+│   └── my-agent.md
 └── skills/
     └── my-skill/
-        ├── SKILL.md      # Skill definition with trigger phrases
-        ├── examples/     # Usage examples
-        └── references/   # Additional documentation (optional)
+        └── SKILL.md      # Skill definition
 ```
 
 ## Documentation
@@ -48,6 +46,8 @@ my-plugin/
 - [Installation Methods](docs/installation.md) - Detailed installation options
 - [Creating Plugins](docs/creating-plugins.md) - Author your own plugins
 - [SKILL.md Format](docs/skill-format.md) - Skill specification reference
+- [OpenCode Integration](docs/opencode-integration.md) - Using plugins with OpenCode
+- [Team Enforcement](docs/team-enforcement.md) - Lockfile-based skill verification
 
 ## Contributing
 
@@ -61,6 +61,18 @@ bun run scripts/validate.ts
 
 # Regenerate marketplace index
 bun run scripts/generate-index.ts
+
+# Generate lockfile from current plugins
+bun run scripts/generate-lock.ts
+
+# Validate lockfile matches actual skills
+bun run scripts/validate-lock.ts
+
+# Add an external skill with SHA pinning
+bun run scripts/add-external.ts <repo-url> <skill-path>
+
+# Sync vendored external skills with upstream
+bun run scripts/sync-external.ts
 ```
 
 ## License

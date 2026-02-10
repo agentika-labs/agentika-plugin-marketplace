@@ -6,8 +6,8 @@ The `oc.sh` script provides a simple way to install skills from the marketplace:
 
 ```bash
 # Clone the marketplace
-git clone https://github.com/agentika/plugin-marketplace.git
-cd plugin-marketplace
+git clone https://github.com/agentika-labs/agentika-plugin-marketplace.git
+cd agentika-plugin-marketplace
 
 # List available skills
 ./oc.sh list
@@ -53,13 +53,13 @@ See [Team Enforcement](team-enforcement.md) for lockfile details.
 Install plugins directly from the marketplace:
 
 ```bash
-npx add-skill agentika/plugin-marketplace/plugins/<category>/<plugin-name>
+npx add-skill agentika-labs/agentika-plugin-marketplace/plugins/<plugin-name>
 ```
 
 Example:
 
 ```bash
-npx add-skill agentika/plugin-marketplace/plugins/api-services/stripe-payments
+npx add-skill agentika-labs/agentika-plugin-marketplace/plugins/grepika
 ```
 
 This installs the plugin to `~/.claude/skills/` for persistent access.
@@ -70,11 +70,11 @@ Copy the plugin directory to your Claude skills folder:
 
 ```bash
 # Clone the marketplace
-git clone https://github.com/agentika/plugin-marketplace.git
-cd plugin-marketplace
+git clone https://github.com/agentika-labs/agentika-plugin-marketplace.git
+cd agentika-plugin-marketplace
 
 # Copy a specific plugin
-cp -r plugins/api-services/stripe-payments ~/.claude/skills/
+cp -r plugins/grepika ~/.claude/skills/
 ```
 
 ## Session-Only Installation
@@ -83,7 +83,7 @@ Use a plugin for a single session without permanent installation:
 
 ```bash
 # From the marketplace directory
-claude --plugin-dir ./plugins/api-services/stripe-payments
+claude --plugin-dir ./plugins/grepika
 
 # Or specify an absolute path
 claude --plugin-dir /path/to/plugin
@@ -98,7 +98,7 @@ Include plugins directly in your project for team sharing:
 mkdir -p .claude/skills
 
 # Copy the plugin
-cp -r /path/to/marketplace/plugins/category/plugin-name .claude/skills/
+cp -r /path/to/marketplace/plugins/plugin-name .claude/skills/
 ```
 
 Add to `.gitignore` if the plugin contains sensitive configurations:
@@ -123,7 +123,7 @@ claude --list-skills
 ### CLI-Installed Plugins
 
 ```bash
-npx add-skill agentika/plugin-marketplace/plugins/<category>/<plugin-name> --force
+npx add-skill agentika-labs/agentika-plugin-marketplace/plugins/<plugin-name> --force
 ```
 
 ### Manually Installed Plugins
@@ -133,7 +133,7 @@ npx add-skill agentika/plugin-marketplace/plugins/<category>/<plugin-name> --for
 rm -rf ~/.claude/skills/<plugin-name>
 
 # Install the new version
-cp -r plugins/<category>/<plugin-name> ~/.claude/skills/
+cp -r plugins/<plugin-name> ~/.claude/skills/
 ```
 
 ## Uninstalling

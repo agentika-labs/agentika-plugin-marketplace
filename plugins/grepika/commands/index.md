@@ -1,10 +1,8 @@
 ---
 name: index
 description: |
-  Use this skill when the user asks to "index the codebase",
-  "build search index", "reindex", "update the index",
-  or mentions keywords related to building or refreshing
-  the grepika code search index.
+  Build or refresh the grepika code search index for the current project.
+  Supports full rebuild (default) or incremental updates.
 version: 1.0.0
 disable-model-invocation: true
 context: fork
@@ -32,17 +30,15 @@ Index the grepika codebase for code search.
 3. Call `mcp__grepika__stats` with `detailed: true`
 4. Report results in this exact format:
 
-```
-## Index Complete
+    ## Index Complete
 
-| Metric | Value |
-|--------|-------|
-| Total files | N |
-| Indexed files | N |
+    | Metric | Value |
+    |--------|-------|
+    | Total files | N |
+    | Indexed files | N |
 
-### File Types
-[file type breakdown from stats detailed output]
-```
+    ### File Types
+    [file type breakdown from stats detailed output]
 
 ## Important
 

@@ -4,18 +4,16 @@ This guide covers how to author plugins for the Agentika Marketplace.
 
 ## Quick Start
 
-1. Copy a template:
+1. Create the plugin directory:
    ```bash
-   cp -r templates/single-skill plugins/<category>/my-plugin
+   mkdir -p plugins/my-plugin/skills/my-skill
    ```
 
-2. Edit `plugin.json` with your metadata
+2. Create `plugins/my-plugin/plugin.json` with your metadata
 
-3. Edit `skills/my-skill/SKILL.md` with your skill definition
+3. Create `plugins/my-plugin/skills/my-skill/SKILL.md` with your skill definition
 
-4. Add examples and references as needed
-
-5. Validate:
+4. Validate:
    ```bash
    bun run scripts/validate.ts
    ```
@@ -25,11 +23,11 @@ This guide covers how to author plugins for the Agentika Marketplace.
 ```
 my-plugin/
 ├── plugin.json           # Required: Plugin metadata
+├── agents/               # Optional: Agent definitions
+│   └── my-agent.md
 └── skills/
     └── my-skill/
-        ├── SKILL.md      # Required: Skill definition
-        ├── examples/     # Optional: Usage examples
-        └── references/   # Optional: Additional docs
+        └── SKILL.md      # Required: Skill definition
 ```
 
 ## plugin.json Schema
@@ -72,12 +70,8 @@ my-plugin/
 
 ### Valid Categories
 
-- `ai-integration` - LLM and AI services
-- `database` - Database clients and ORMs
-- `api-services` - Third-party APIs
-- `devops` - Deployment and infrastructure
-- `testing` - Testing frameworks
-- `ui-frameworks` - UI components
+The `category` field is metadata in `plugin.json` — it does not correspond to a filesystem directory. Valid values:
+
 - `utilities` - General utilities
 
 ## SKILL.md Format
@@ -223,7 +217,7 @@ Each skill should be self-contained but can reference shared code.
 
 2. **Test locally:**
    ```bash
-   claude --plugin-dir ./plugins/category/my-plugin
+   claude --plugin-dir ./plugins/my-plugin
    ```
 
 3. **Verify trigger phrases:**

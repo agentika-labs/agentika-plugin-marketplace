@@ -1,5 +1,12 @@
 {
   "version": 1,
-  "generated": "2026-02-04T00:00:00.000Z",
-  "skills": {}
+  "generated": "2026-02-10T09:30:51.022Z",
+  "skills": {
+    "plugins/grepika/skills/impact": "internal",
+    "plugins/grepika/skills/index-status": "internal",
+    "plugins/grepika/skills/investigate": "internal",
+    "plugins/grepika/skills/learn-codebase": "internal",
+    "plugins/humanika/skills/humanika": "internal",
+    "plugins/jj/skills/jj": "internal"
+  }
 }

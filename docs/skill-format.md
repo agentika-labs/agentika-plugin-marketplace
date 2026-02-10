@@ -130,6 +130,82 @@ metadata:
   custom_field: any value
 ```
 
+## Frontmatter (Extended)
+
+These fields control skill execution behavior. They are used in practice (e.g., by grepika skills) but are not required.
+
+### disable-model-invocation
+
+Prevents the model from automatically invoking this skill. When `true`, the skill can only be triggered by explicit user request (e.g., `/skill-name`).
+
+- **Type:** boolean
+- **Default:** `false`
+
+```yaml
+disable-model-invocation: true
+```
+
+### context
+
+Controls the execution context for the skill.
+
+- **Type:** string
+- **Values:** `"fork"` — Runs the skill in a forked subprocess
+
+```yaml
+context: fork
+```
+
+### agent
+
+Specifies which agent type should execute this skill.
+
+- **Type:** string
+- **Example:** `"Explore"` — Delegates to the Explore agent
+
+```yaml
+agent: Explore
+```
+
+### allowed-tools
+
+Whitelist of MCP tools the skill is allowed to use. Restricts the skill's capabilities to only the listed tools.
+
+- **Type:** array of strings
+- **Format:** MCP tool identifiers (e.g., `mcp__server__tool_name`)
+
+```yaml
+allowed-tools:
+  - mcp__grepika__search
+  - mcp__grepika__relevant
+  - mcp__grepika__get
+```
+
+### Example with Extended Fields
+
+```yaml
+---
+name: investigate
+description: |
+  Use this skill when the user asks to "investigate a bug",
+  "trace an error", or "debug this issue".
+version: 1.0.0
+disable-model-invocation: true
+context: fork
+agent: Explore
+allowed-tools:
+  - mcp__grepika__search
+  - mcp__grepika__relevant
+  - mcp__grepika__refs
+  - mcp__grepika__outline
+  - mcp__grepika__get
+---
+```
+
+## Agent Definitions
+
+Plugins can also include agent definitions in an `agents/` directory. Each agent is defined as a Markdown file (e.g., `agents/explorer.md`) with YAML frontmatter containing a `name` and `description`. See [Creating Plugins](creating-plugins.md) for the plugin directory structure.
+
 ## Markdown Content
 
 After the frontmatter, document the skill in Markdown.

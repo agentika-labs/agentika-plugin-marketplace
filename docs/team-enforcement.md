@@ -20,7 +20,7 @@ This enables:
   "version": 1,
   "generated": "2026-02-04T10:00:00.000Z",
   "skills": {
-    "plugins/api-services/stripe/skills/checkout": "internal",
+    "plugins/grepika/skills/index": "internal",
     "plugins/external/anthropics/claude-skills/skills/code-review": {
       "origin": "https://github.com/anthropics/claude-skills.git",
       "sha": "abc1234"

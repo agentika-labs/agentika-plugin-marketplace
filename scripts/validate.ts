@@ -19,15 +19,7 @@ const ROOT = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
 const PLUGINS_DIR = `${ROOT}/plugins`;
 const TEMPLATES_DIR = `${ROOT}/templates`;
 
-const VALID_CATEGORIES = [
-  "ai-integration",
-  "database",
-  "api-services",
-  "devops",
-  "testing",
-  "ui-frameworks",
-  "utilities",
-];
+const VALID_CATEGORIES = ["utilities"];
 
 const KEBAB_CASE_REGEX = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
 const SEMVER_REGEX = /^\d+\.\d+\.\d+$/;

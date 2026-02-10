@@ -40,15 +40,15 @@ See [docs/skill-format.md](docs/skill-format.md) for the full specification.
 ### 1. Fork the Repository
 
 ```bash
-git clone https://github.com/agentika/plugin-marketplace.git
-cd plugin-marketplace
+git clone https://github.com/agentika-labs/agentika-plugin-marketplace.git
+cd agentika-plugin-marketplace
 ```
 
 ### 2. Create Your Plugin
 
 ```bash
 # Create your plugin directory
-mkdir -p plugins/<category>/my-plugin/skills/my-skill
+mkdir -p plugins/my-plugin/skills/my-skill
 
 # Edit plugin.json and SKILL.md
 ```

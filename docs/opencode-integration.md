@@ -16,8 +16,8 @@ OpenCode supports loading skills from the `.claude/skills/` directory, using the
 
 ```bash
 # Clone the marketplace
-git clone https://github.com/agentika/plugin-marketplace.git
-cd plugin-marketplace
+git clone https://github.com/agentika-labs/agentika-plugin-marketplace.git
+cd agentika-plugin-marketplace
 
 # Install a skill
 ./oc.sh install my-skill
