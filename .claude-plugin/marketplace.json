@@ -1,0 +1,52 @@
+{
+  "name": "agentika-marketplace",
+  "owner": {
+    "name": "Agentika",
+    "url": "https://github.com/agentika",
+    "email": "support@agentika.io"
+  },
+  "metadata": {
+    "description": "Curated AI agent plugins for Claude Code and compatible agents",
+    "version": "1.0.0",
+    "pluginRoot": "plugins"
+  },
+  "categories": [
+    {
+      "id": "utilities",
+      "name": "Utilities",
+      "description": "General-purpose utilities and helpers"
+    }
+  ],
+  "plugins": [
+    {
+      "name": "grepika",
+      "source": "./plugins/grepika",
+      "description": "Token-efficient codebase exploration using grepika MCP server with trigram indexing, FTS5 search, and semantic file discovery.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Agentika"
+      },
+      "category": "utilities"
+    },
+    {
+      "name": "humanika",
+      "source": "./plugins/humanika",
+      "description": "Detect and fix AI writing patterns to make text sound like it was written by a real person with opinions, personality, and specific knowledge.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Agentika"
+      },
+      "category": "utilities"
+    },
+    {
+      "name": "jj",
+      "source": "./plugins/jj",
+      "description": "JJ (Jujutsu) version control workflows for AI agentic development with Git colocation, parallel workspaces, and conflict resolution.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Agentika"
+      },
+      "category": "utilities"
+    }
+  ]
+}
