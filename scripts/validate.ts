@@ -19,8 +19,6 @@ const ROOT = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
 const PLUGINS_DIR = `${ROOT}/plugins`;
 const TEMPLATES_DIR = `${ROOT}/templates`;
 
-const VALID_CATEGORIES = ["utilities"];
-
 const KEBAB_CASE_REGEX = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
 const SEMVER_REGEX = /^\d+\.\d+\.\d+$/;
 
@@ -139,17 +137,6 @@ const validatePluginJson = (
       valid = false;
     } else if (!plugin.author.name) {
       yield* addError("Missing required field: author.name");
-      valid = false;
-    }
-
-    // Validate category
-    if (!plugin.category) {
-      yield* addError("Missing required field: category");
-      valid = false;
-    } else if (!VALID_CATEGORIES.includes(plugin.category)) {
-      yield* addError(
-        `Invalid category: "${plugin.category}" (valid: ${VALID_CATEGORIES.join(", ")})`
-      );
       valid = false;
     }
 

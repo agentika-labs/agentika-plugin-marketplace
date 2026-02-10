@@ -4,6 +4,5 @@
   "description": "JJ (Jujutsu) version control workflows for AI agentic development with Git colocation, parallel workspaces, and conflict resolution.",
   "author": {
     "name": "Agentika"
-  },
-  "category": "utilities"
+  }
 }

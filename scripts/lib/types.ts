@@ -16,7 +16,6 @@ export interface PluginJson {
   version: string;
   description: string;
   author: Author;
-  category: string;
   license?: string;
   keywords?: string[];
   homepage?: string;
@@ -73,7 +72,6 @@ export interface MarketplacePlugin {
   description: string;
   version: string;
   author: Author;
-  category: string;
   homepage?: string;
   repository?: string;
   license?: string;

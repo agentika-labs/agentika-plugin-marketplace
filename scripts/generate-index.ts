@@ -147,7 +147,6 @@ const main = Effect.gen(function* () {
       description: plugin.description,
       version: plugin.version,
       author: plugin.author,
-      category: plugin.category,
     };
 
     // Add optional fields if present

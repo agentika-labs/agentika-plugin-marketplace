@@ -4,6 +4,5 @@
   "description": "Detect and fix AI writing patterns to make text sound like it was written by a real person with opinions, personality, and specific knowledge.",
   "author": {
     "name": "Agentika"
-  },
-  "category": "utilities"
+  }
 }
