@@ -1,0 +1,61 @@
+name: Validate Skills
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/**'
+      - 'templates/**'
+      - 'scripts/**'
+      - 'schemas/**'
+      - 'marketplace.lock'
+  push:
+    branches: [main]
+    paths:
+      - 'plugins/**'
+      - 'templates/**'
+      - 'scripts/**'
+      - 'schemas/**'
+      - 'marketplace.lock'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate Plugin Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Validate plugins and skills
+        run: bun run scripts/validate.ts
+
+      - name: Validate lockfile consistency
+        run: bun run scripts/validate-lock.ts --strict
+
+  lint-schemas:
+    name: Validate JSON Schemas
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate JSON Schema syntax
+        run: |
+          for schema in schemas/*.schema.json; do
+            echo "Checking $schema..."
+            if ! python3 -c "import json; json.load(open('$schema'))"; then
+              echo "Invalid JSON in $schema"
+              exit 1
+            fi
+          done
+          echo "All schemas are valid JSON"

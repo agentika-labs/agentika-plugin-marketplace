@@ -47,8 +47,8 @@ cd plugin-marketplace
 ### 2. Create Your Plugin
 
 ```bash
-# Use a template
-cp -r templates/single-skill plugins/<category>/my-plugin
+# Create your plugin directory
+mkdir -p plugins/<category>/my-plugin/skills/my-skill
 
 # Edit plugin.json and SKILL.md
 ```

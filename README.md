@@ -17,16 +17,6 @@ cp -r plugins/<category>/<plugin-name> ~/.claude/skills/
 claude --plugin-dir ./plugins/<category>/<plugin-name>
 ```
 
-### Use a Template
-
-```bash
-# Copy single-skill template
-cp -r templates/single-skill plugins/<category>/my-plugin
-
-# Copy multi-skill template
-cp -r templates/multi-skill plugins/<category>/my-plugin
-```
-
 ## Categories
 
 | Category | Description |

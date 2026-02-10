@@ -1,4 +1,11 @@
 {
+  "name": "agentika-plugin-marketplace",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agentika-labs/agentika-plugin-marketplace.git"
+  },
+  "homepage": "https://github.com/agentika-labs/agentika-plugin-marketplace",
+  "bugs": "https://github.com/agentika-labs/agentika-plugin-marketplace/issues",
   "dependencies": {
     "effect": "^3.0.0",
     "@effect/platform": "^0.70.0",

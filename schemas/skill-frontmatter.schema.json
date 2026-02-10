@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentika.com/schemas/skill-frontmatter.schema.json",
+  "title": "SKILL.md Frontmatter",
+  "description": "YAML frontmatter schema for SKILL.md files, supporting both Claude Code and OpenCode",
+  "type": "object",
+  "required": ["name", "description", "version"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "description": "Unique skill identifier in kebab-case"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Trigger phrases and keywords for agent discovery"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version (e.g., 0.1.0, 1.0.0)"
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier (e.g., MIT, Apache-2.0)"
+    },
+    "compatibility": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["claude-code", "opencode"]
+      },
+      "uniqueItems": true,
+      "description": "Target systems for this skill"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "type": "string",
+          "description": "Skill author name"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Searchable tags for categorization"
+        }
+      },
+      "additionalProperties": true,
+      "description": "Additional metadata for discovery and attribution"
+    }
+  },
+  "additionalProperties": false
+}

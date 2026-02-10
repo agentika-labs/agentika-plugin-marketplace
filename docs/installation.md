@@ -1,6 +1,54 @@
 # Installation Methods
 
-## CLI Installation (Recommended)
+## Using oc.sh (Recommended for OpenCode)
+
+The `oc.sh` script provides a simple way to install skills from the marketplace:
+
+```bash
+# Clone the marketplace
+git clone https://github.com/agentika/plugin-marketplace.git
+cd plugin-marketplace
+
+# List available skills
+./oc.sh list
+
+# Install a skill
+./oc.sh install stripe-checkout
+
+# Install external skill with SHA pin
+./oc.sh install github.com/anthropics/claude-skills@abc1234
+
+# List installed skills
+./oc.sh installed
+
+# Uninstall a skill
+./oc.sh uninstall stripe-checkout
+```
+
+### Install Locations
+
+By default, `oc.sh` installs to:
+- **Project-level:** `.claude/skills/` (if `.claude/` exists in current or parent directory)
+- **User-level:** `~/.claude/skills/` (fallback)
+
+Use `--user` to force user-level installation:
+
+```bash
+./oc.sh install stripe-checkout --user
+```
+
+### Team Verification
+
+Verify installed skills match the lockfile:
+
+```bash
+./oc.sh verify           # Warn on mismatches
+./oc.sh verify --strict  # Fail on mismatches (for CI)
+```
+
+See [Team Enforcement](team-enforcement.md) for lockfile details.
+
+## CLI Installation (npx)
 
 Install plugins directly from the marketplace:
 

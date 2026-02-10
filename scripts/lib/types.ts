@@ -23,11 +23,47 @@ export interface PluginJson {
   repository?: string;
 }
 
-// SKILL.md frontmatter
+// Skill metadata for OpenCode compatibility
+export interface SkillMetadata {
+  author?: string;
+  tags?: string[];
+  [key: string]: unknown; // Allow additional metadata fields
+}
+
+// SKILL.md frontmatter - unified format supporting both Claude Code and OpenCode
 export interface SkillFrontmatter {
+  // Required (both systems)
   name: string;
   description: string;
   version: string;
+
+  // Optional (OpenCode compatibility)
+  license?: string;
+  compatibility?: Array<"claude-code" | "opencode">;
+  metadata?: SkillMetadata;
+}
+
+// External skill source tracking
+export interface ExternalSkillSource {
+  url: string;
+  sha: string;
+  syncedAt: string;
+  paths?: string[]; // Optional: specific paths to sync from the repo
+}
+
+// Lockfile entry for a skill
+export type LockfileSkillEntry =
+  | "internal"
+  | {
+      origin: string;
+      sha: string;
+    };
+
+// Marketplace lockfile for team enforcement
+export interface MarketplaceLock {
+  version: number;
+  generated: string;
+  skills: Record<string, LockfileSkillEntry>;
 }
 
 // Marketplace plugin entry

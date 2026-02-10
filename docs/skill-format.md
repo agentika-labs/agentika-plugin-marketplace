@@ -6,16 +6,26 @@ SKILL.md files define individual skills within a plugin. They use YAML frontmatt
 
 ```markdown
 ---
+# Required (both Claude Code and OpenCode)
 name: skill-name
 description: |
   Trigger phrases for agent discovery...
 version: 0.1.0
+
+# Optional (OpenCode compatibility)
+license: MIT
+compatibility: [claude-code, opencode]
+metadata:
+  author: Your Name
+  tags: [api, integration]
 ---
 
 # Skill Title
 
 Content in Markdown...
 ```
+
+This unified format works with both Claude Code and OpenCode. Required fields are validated; optional fields are ignored by systems that don't support them.
 
 ## Frontmatter (Required)
 
@@ -73,6 +83,51 @@ Semantic version of the skill.
 
 ```yaml
 version: 0.1.0
+```
+
+## Frontmatter (Optional)
+
+These fields are optional and provide additional metadata for OpenCode compatibility and discovery.
+
+### license
+
+SPDX license identifier for the skill.
+
+- **Type:** string
+- **Format:** SPDX identifier
+- **Example:** `MIT`, `Apache-2.0`, `ISC`
+
+```yaml
+license: MIT
+```
+
+### compatibility
+
+Target systems for this skill. Useful for skills that only work in specific environments.
+
+- **Type:** array of strings
+- **Values:** `claude-code`, `opencode`
+- **Default:** Works with all systems
+
+```yaml
+compatibility: [claude-code, opencode]
+```
+
+### metadata
+
+Additional metadata for discovery and attribution.
+
+- **Type:** object
+- **Properties:**
+  - `author` (string): Skill author name
+  - `tags` (array): Searchable tags for categorization
+  - Custom fields allowed
+
+```yaml
+metadata:
+  author: Jane Developer
+  tags: [payments, api, e-commerce]
+  custom_field: any value
 ```
 
 ## Markdown Content

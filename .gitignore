@@ -6,9 +6,6 @@ dist/
 build/
 out/
 
-# Bun
-bun.lock
-
 # Environment files
 .env
 .env.local
@@ -33,3 +30,6 @@ coverage/
 
 # Claude plugin workspace
 .claude-plugin/
+
+# Claude Code settings
+.claude/
