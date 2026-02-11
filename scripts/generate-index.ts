@@ -32,13 +32,13 @@ const loadPluginJson = (
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
 
-    const pluginJsonPath = path.join(pluginDir, "plugin.json");
+    const pluginJsonPath = path.join(pluginDir, ".claude-plugin", "plugin.json");
 
     const exists = yield* fs.exists(pluginJsonPath).pipe(
       Effect.catchAll(() => Effect.succeed(false))
     );
     if (!exists) {
-      yield* Effect.logWarning(`Skipping ${pluginDir}: plugin.json not found`);
+      yield* Effect.logWarning(`Skipping ${pluginDir}: .claude-plugin/plugin.json not found`);
       return null;
     }
 
@@ -137,7 +137,7 @@ const main = Effect.gen(function* () {
     const plugin = yield* loadPluginJson(pluginPath);
 
     if (!plugin) {
-      yield* Console.log(`⚠ Skipping ${relPath}: invalid plugin.json`);
+      yield* Console.log(`⚠ Skipping ${relPath}: invalid .claude-plugin/plugin.json`);
       continue;
     }
 

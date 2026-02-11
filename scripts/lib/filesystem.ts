@@ -8,7 +8,7 @@ import { DirectoryReadError } from "./errors";
  */
 
 /**
- * Recursively find all plugin directories (directories containing plugin.json).
+ * Recursively find all plugin directories (directories containing .claude-plugin/plugin.json).
  * Fails explicitly if the root directory doesn't exist or is unreadable.
  */
 export const findPlugins = (
@@ -57,8 +57,8 @@ export const findPlugins = (
 
       if (stat.type !== "Directory") continue;
 
-      // Check if plugin.json exists in this directory
-      const pluginJsonPath = path.join(entryPath, "plugin.json");
+      // Check if .claude-plugin/plugin.json exists in this directory
+      const pluginJsonPath = path.join(entryPath, ".claude-plugin", "plugin.json");
       const hasPluginJson = yield* fs.exists(pluginJsonPath).pipe(
         Effect.catchAll(() => Effect.succeed(false))
       );

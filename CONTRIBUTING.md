@@ -8,7 +8,7 @@ Thank you for your interest in contributing plugins to the Agentika Marketplace!
 
 Every plugin must include:
 
-1. **`plugin.json`** - Plugin metadata with required fields:
+1. **`.claude-plugin/plugin.json`** - Plugin metadata with required fields:
    - `name` - Unique kebab-case identifier
    - `version` - Semantic version (e.g., `0.1.0`)
    - `description` - Brief description of the plugin
@@ -48,9 +48,9 @@ cd agentika-plugin-marketplace
 
 ```bash
 # Create your plugin directory
-mkdir -p plugins/my-plugin/skills/my-skill
+mkdir -p plugins/my-plugin/{.claude-plugin,skills/my-skill}
 
-# Edit plugin.json and SKILL.md
+# Edit .claude-plugin/plugin.json and skills/my-skill/SKILL.md
 ```
 
 ### 3. Validate Your Plugin

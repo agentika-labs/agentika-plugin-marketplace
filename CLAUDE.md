@@ -24,7 +24,8 @@ All scripts use Bun. Install dependencies first: `bun install`
 ```
 plugins/                    # All plugins live here
   <plugin-name>/
-    plugin.json             # Plugin metadata (required)
+    .claude-plugin/
+      plugin.json           # Plugin metadata (required)
     skills/                 # Skills directory (required, at least one skill)
       <skill-name>/
         SKILL.md            # Skill definition with YAML frontmatter (required)
@@ -60,6 +61,9 @@ scripts/                    # Bun + Effect TS tooling
 - No special characters or spaces
 
 ### plugin.json Required Fields
+
+Located at `.claude-plugin/plugin.json` inside each plugin directory:
+
 ```json
 {
   "name": "my-plugin",
@@ -86,12 +90,12 @@ version: 0.1.0
 Required: `name`, `description`, `version`. Optional: `license`, `compatibility`, `metadata`.
 
 ### Validation Rules (what `validate.ts` enforces)
-1. Each plugin directory must have a `plugin.json`
+1. Each plugin directory must have a `.claude-plugin/plugin.json`
 2. Each plugin must have a `skills/` directory with at least one skill
 3. Each skill directory must contain a `SKILL.md` with valid YAML frontmatter
 4. Names must be kebab-case, versions must be semver
 5. Skill names must be globally unique across all plugins
-6. `plugin.json` must include: `name`, `version`, `description`, `author.name`, `category`
+6. `.claude-plugin/plugin.json` must include: `name`, `version`, `description`, `author.name`, `category`
 7. `category` must be one of the valid category IDs
 
 ### Lockfile

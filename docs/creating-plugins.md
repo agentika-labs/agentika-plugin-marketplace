@@ -6,10 +6,10 @@ This guide covers how to author plugins for the Agentika Marketplace.
 
 1. Create the plugin directory:
    ```bash
-   mkdir -p plugins/my-plugin/skills/my-skill
+   mkdir -p plugins/my-plugin/{.claude-plugin,skills/my-skill}
    ```
 
-2. Create `plugins/my-plugin/plugin.json` with your metadata
+2. Create `plugins/my-plugin/.claude-plugin/plugin.json` with your metadata
 
 3. Create `plugins/my-plugin/skills/my-skill/SKILL.md` with your skill definition
 
@@ -22,7 +22,8 @@ This guide covers how to author plugins for the Agentika Marketplace.
 
 ```
 my-plugin/
-├── plugin.json           # Required: Plugin metadata
+├── .claude-plugin/
+│   └── plugin.json       # Required: Plugin metadata
 ├── agents/               # Optional: Agent definitions
 │   └── my-agent.md
 └── skills/
@@ -31,6 +32,8 @@ my-plugin/
 ```
 
 ## plugin.json Schema
+
+Located at `.claude-plugin/plugin.json` inside each plugin directory:
 
 ```json
 {
@@ -196,7 +199,8 @@ For plugins with multiple related skills:
 
 ```
 my-plugin/
-├── plugin.json
+├── .claude-plugin/
+│   └── plugin.json
 └── skills/
     ├── skill-one/
     │   └── SKILL.md

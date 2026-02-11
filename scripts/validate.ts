@@ -57,7 +57,7 @@ const validatePluginJson = (
         ...errors,
         new ValidationError({
           path: pluginJsonPath,
-          message: "Missing plugin.json",
+          message: "Missing .claude-plugin/plugin.json",
         }),
       ]);
       return false;
@@ -264,7 +264,7 @@ const validatePlugin = (
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
 
-    const pluginJsonPath = path.join(pluginDir, "plugin.json");
+    const pluginJsonPath = path.join(pluginDir, ".claude-plugin", "plugin.json");
     const skillsDir = path.join(pluginDir, "skills");
 
     let valid = true;
