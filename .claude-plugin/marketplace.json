@@ -6,7 +6,7 @@
     "email": "support@agentika.io"
   },
   "metadata": {
-    "description": "Curated AI agent plugins for Claude Code and compatible agents",
+    "description": "Curated AI agent plugins for Claude Code",
     "version": "1.0.0",
     "pluginRoot": "plugins"
   },

@@ -61,16 +61,6 @@ bun run scripts/validate-lock.ts
 bun run scripts/validate-lock.ts --strict
 ```
 
-### Using oc.sh
-
-```bash
-# Verify installed skills match lockfile
-./oc.sh verify
-
-# Strict mode for CI
-./oc.sh verify --strict
-```
-
 ## CI Integration
 
 Add lockfile validation to your CI pipeline:
@@ -201,5 +191,4 @@ If an external skill's SHA doesn't match:
 ## Related Documentation
 
 - [Installation Methods](installation.md)
-- [OpenCode Integration](opencode-integration.md)
 - [Skill Format Specification](skill-format.md)

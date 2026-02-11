@@ -1,6 +1,6 @@
 {
   "name": "humanika",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Detect and fix AI writing patterns to make text sound like it was written by a real person with opinions, personality, and specific knowledge.",
   "author": {
     "name": "Agentika"

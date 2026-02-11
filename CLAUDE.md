@@ -1,6 +1,6 @@
 # Agentika Plugin Marketplace
 
-A curated marketplace of plugins and skills for AI coding agents (Claude Code, OpenCode). Plugins provide reusable prompt-based skills that agents can discover and invoke.
+A curated marketplace of plugins and skills for Claude Code. Plugins provide reusable prompt-based skills that agents can discover and invoke.
 
 ## Commands
 
@@ -87,7 +87,7 @@ version: 0.1.0
 ---
 ```
 
-Required: `name`, `description`, `version`. Optional: `license`, `compatibility`, `metadata`.
+Required: `name`, `description`, `version`. Optional: `license`, `metadata`.
 
 ### Validation Rules (what `validate.ts` enforces)
 1. Each plugin directory must have a `.claude-plugin/plugin.json`

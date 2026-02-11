@@ -1,6 +1,6 @@
 # Agentika Plugin Marketplace
 
-A curated collection of AI agent plugins for Claude Code and compatible agents.
+A curated collection of AI agent plugins for Claude Code.
 
 ## Quick Start
 
@@ -46,7 +46,6 @@ my-plugin/
 - [Installation Methods](docs/installation.md) - Detailed installation options
 - [Creating Plugins](docs/creating-plugins.md) - Author your own plugins
 - [SKILL.md Format](docs/skill-format.md) - Skill specification reference
-- [OpenCode Integration](docs/opencode-integration.md) - Using plugins with OpenCode
 - [Team Enforcement](docs/team-enforcement.md) - Lockfile-based skill verification
 
 ## Contributing

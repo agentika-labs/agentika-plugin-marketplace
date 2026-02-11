@@ -22,23 +22,20 @@ export interface PluginJson {
   repository?: string;
 }
 
-// Skill metadata for OpenCode compatibility
+// Skill metadata for discovery and attribution
 export interface SkillMetadata {
   author?: string;
   tags?: string[];
   [key: string]: unknown; // Allow additional metadata fields
 }
 
-// SKILL.md frontmatter - unified format supporting both Claude Code and OpenCode
+// SKILL.md frontmatter
 export interface SkillFrontmatter {
-  // Required (both systems)
   name: string;
   description: string;
   version: string;
 
-  // Optional (OpenCode compatibility)
   license?: string;
-  compatibility?: Array<"claude-code" | "opencode">;
   metadata?: SkillMetadata;
 }
 

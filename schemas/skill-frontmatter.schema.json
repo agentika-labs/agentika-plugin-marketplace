@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://agentika.com/schemas/skill-frontmatter.schema.json",
   "title": "SKILL.md Frontmatter",
-  "description": "YAML frontmatter schema for SKILL.md files, supporting both Claude Code and OpenCode",
+  "description": "YAML frontmatter schema for SKILL.md files in the Agentika Plugin Marketplace",
   "type": "object",
   "required": ["name", "description", "version"],
   "properties": {
@@ -24,15 +24,6 @@
     "license": {
       "type": "string",
       "description": "SPDX license identifier (e.g., MIT, Apache-2.0)"
-    },
-    "compatibility": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": ["claude-code", "opencode"]
-      },
-      "uniqueItems": true,
-      "description": "Target systems for this skill"
     },
     "metadata": {
       "type": "object",
