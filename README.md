@@ -1,6 +1,6 @@
 # Agentika Plugin Marketplace
 
-A curated collection of AI agent plugins for Claude Code.
+Reusable plugins and skills for Claude Code. Each plugin adds prompt-based capabilities that agents can discover and invoke.
 
 ## Quick Start
 
@@ -21,11 +21,14 @@ claude --plugin-dir ./plugins/<plugin-name>
 
 Plugins live directly under `plugins/`:
 
-| Plugin | Category | Description |
-|--------|----------|-------------|
-| [grepika](plugins/grepika/) | utilities | Token-efficient codebase exploration with trigram indexing |
+| Plugin | Description |
+|--------|-------------|
+| [grepika](plugins/grepika/) | Codebase exploration with trigram indexing, FTS5 search, and semantic file discovery |
+| [humanika](plugins/humanika/) | Detect and fix AI writing patterns so text sounds like a person wrote it |
+| [jj](plugins/jj/) | JJ (Jujutsu) version control workflows with Git colocation and parallel workspaces |
+| [change-journal](plugins/change-journal/) | Track file changes across sessions for cross-workspace awareness |
 
-Categories are declared in each plugin's `plugin.json`, not as filesystem directories.
+Categories live in each plugin's `plugin.json`, not as filesystem directories.
 
 ## Plugin Structure
 
@@ -33,12 +36,16 @@ Each plugin follows this structure:
 
 ```
 my-plugin/
-├── plugin.json           # Plugin metadata
-├── agents/               # Optional: Agent definitions
-│   └── my-agent.md
-└── skills/
-    └── my-skill/
-        └── SKILL.md      # Skill definition
+├── .claude-plugin/
+│   └── plugin.json       # Plugin metadata (required)
+├── hooks/                # Optional: lifecycle hooks
+│   ├── hooks.json
+│   └── scripts/
+├── skills/               # At least one skill required
+│   └── my-skill/
+│       └── SKILL.md      # Skill definition with YAML frontmatter
+└── agents/               # Optional: agent definitions
+    └── my-agent.md
 ```
 
 ## Documentation

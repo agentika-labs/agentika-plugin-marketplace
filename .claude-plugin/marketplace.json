@@ -19,6 +19,15 @@
   ],
   "plugins": [
     {
+      "name": "change-journal",
+      "source": "./plugins/change-journal",
+      "description": "Automatically track file changes across agent sessions for cross-workspace awareness. Provides a queryable journal of what changed, when, where, and by whom.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Agentika"
+      }
+    },
+    {
       "name": "grepika",
       "source": "./plugins/grepika",
       "description": "Token-efficient codebase exploration using grepika MCP server with trigram indexing, FTS5 search, and semantic file discovery.",
@@ -31,7 +40,7 @@
       "name": "humanika",
       "source": "./plugins/humanika",
       "description": "Detect and fix AI writing patterns to make text sound like it was written by a real person with opinions, personality, and specific knowledge.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Agentika"
       }

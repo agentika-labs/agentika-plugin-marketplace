@@ -1,7 +1,8 @@
 {
   "version": 1,
-  "generated": "2026-02-11T22:46:50.131Z",
+  "generated": "2026-02-12T23:32:21.983Z",
   "skills": {
+    "plugins/change-journal/skills/change-journal": "internal",
     "plugins/grepika/skills/impact": "internal",
     "plugins/grepika/skills/index-status": "internal",
     "plugins/grepika/skills/investigate": "internal",
