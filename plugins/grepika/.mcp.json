@@ -1,6 +1,6 @@
 {
   "grepika": {
     "command": "npx",
-    "args": ["-y", "@agentika/grepika", "--mcp"]
+    "args": ["-y", "@agentika/grepika@0.2.0", "--mcp"]
   }
 }
