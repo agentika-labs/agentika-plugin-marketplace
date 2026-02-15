@@ -1,6 +1,24 @@
 # Contributing to Agentika Plugin Marketplace
 
-Thank you for your interest in contributing plugins to the Agentika Marketplace!
+How to create and submit plugins to the marketplace.
+
+## Plugin Structure
+
+Each plugin follows this layout:
+
+```
+my-plugin/
+├── .claude-plugin/
+│   └── plugin.json       # Plugin metadata (required)
+├── hooks/                # Optional: lifecycle hooks
+│   ├── hooks.json
+│   └── scripts/
+├── skills/               # At least one content type required
+│   └── my-skill/
+│       └── SKILL.md      # Skill definition with YAML frontmatter
+└── agents/               # Optional: agent definitions
+    └── my-agent.md
+```
 
 ## Plugin Requirements
 
@@ -15,10 +33,10 @@ Every plugin must include:
    - `author` - Object with `name` and optional `email`
 
 2. **At least one of** the following content types:
-   - `skills/` — Each skill in its own directory with a `SKILL.md` file
-   - `commands/` — Command markdown files
-   - `hooks.json` — Lifecycle hooks (declare with `"hooks": "./hooks.json"` in plugin.json)
-   - `agents/` — Agent definitions
+   - `skills/` - Each skill in its own directory with a `SKILL.md` file
+   - `commands/` - Command markdown files
+   - `hooks.json` - Lifecycle hooks (declare with `"hooks": "./hooks.json"` in plugin.json)
+   - `agents/` - Agent definitions
 
 ### SKILL.md Format
 
@@ -60,7 +78,7 @@ mkdir -p plugins/my-plugin/{.claude-plugin,skills/my-skill}
 bun run scripts/validate.ts
 ```
 
-Ensure validation passes before submitting.
+Make sure validation passes before submitting.
 
 ### 4. Submit a Pull Request
 
@@ -121,6 +139,35 @@ PRs are reviewed for:
 3. **Quality** - Clear descriptions, working examples
 4. **Uniqueness** - Doesn't duplicate existing plugins
 5. **Security** - No hardcoded secrets, follows best practices
+
+## Development Scripts
+
+All scripts use Bun. Run `bun install` first.
+
+```bash
+# Validate plugin structure
+bun run scripts/validate.ts
+
+# Validate a specific plugin
+bun run scripts/validate.ts plugins/my-plugin
+
+# Regenerate marketplace index
+bun run scripts/generate-index.ts
+
+# Generate lockfile from current plugins
+bun run scripts/generate-lock.ts
+
+# Validate lockfile matches actual skills
+bun run scripts/validate-lock.ts
+
+# Add an external skill with SHA pinning
+bun run scripts/add-external.ts <repo-url> <skill-path>
+
+# Sync vendored external skills with upstream
+bun run scripts/sync-external.ts
+```
+
+After adding or modifying plugins, run `validate.ts` then `generate-lock.ts`.
 
 ## Questions?
 

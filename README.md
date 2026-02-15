@@ -1,10 +1,23 @@
 # Agentika Plugin Marketplace
 
-Reusable plugins and skills for Claude Code. Each plugin adds prompt-based capabilities that agents can discover and invoke.
+Plugins for Claude Code. Each one adds skills, hooks, or agent definitions that extend what Claude Code can do. Think code cleanup, version control workflows, desktop notifications, and more.
 
-## Quick Start
+## Plugins
 
-### Install a Plugin
+| Plugin | Description |
+|--------|-------------|
+| [change-journal](plugins/change-journal/) | Track file changes across agent sessions for cross-workspace awareness |
+| [clip](plugins/clip/) | Copy clean text to clipboard without terminal formatting artifacts |
+| [deslop](plugins/deslop/) | Detect and remove AI-generated code patterns (slop) from your branch |
+| [grepika](plugins/grepika/) | Token-efficient codebase exploration with trigram indexing and FTS5 search |
+| [humanika](plugins/humanika/) | Detect and fix AI writing patterns so text sounds human-written |
+| [jj](plugins/jj/) | JJ (Jujutsu) version control with Git colocation and parallel workspaces |
+| [notify](plugins/notify/) | macOS desktop notifications for Claude Code lifecycle events |
+| [optimization-hints](plugins/optimization-hints/) | Surface workflow optimization hints when sessions accumulate many tool calls |
+| [personas](plugins/personas/) | Engineering persona commands for backend, frontend, fullstack, infra, and observability |
+| [prompt-engineering](plugins/prompt-engineering/) | Socratic reasoning for deep analysis and task completion verification |
+
+## Installation
 
 ```bash
 # Using npx (recommended)
@@ -17,37 +30,6 @@ cp -r plugins/<plugin-name> ~/.claude/skills/
 claude --plugin-dir ./plugins/<plugin-name>
 ```
 
-## Plugins
-
-Plugins live directly under `plugins/`:
-
-| Plugin | Description |
-|--------|-------------|
-| [grepika](plugins/grepika/) | Codebase exploration with trigram indexing, FTS5 search, and semantic file discovery |
-| [humanika](plugins/humanika/) | Detect and fix AI writing patterns so text sounds like a person wrote it |
-| [jj](plugins/jj/) | JJ (Jujutsu) version control workflows with Git colocation and parallel workspaces |
-| [change-journal](plugins/change-journal/) | Track file changes across sessions for cross-workspace awareness |
-
-Categories live in each plugin's `plugin.json`, not as filesystem directories.
-
-## Plugin Structure
-
-Each plugin follows this structure:
-
-```
-my-plugin/
-├── .claude-plugin/
-│   └── plugin.json       # Plugin metadata (required)
-├── hooks/                # Optional: lifecycle hooks
-│   ├── hooks.json
-│   └── scripts/
-├── skills/               # At least one skill required
-│   └── my-skill/
-│       └── SKILL.md      # Skill definition with YAML frontmatter
-└── agents/               # Optional: agent definitions
-    └── my-agent.md
-```
-
 ## Documentation
 
 - [Installation Methods](docs/installation.md) - Detailed installation options
@@ -57,29 +39,7 @@ my-plugin/
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on submitting plugins.
-
-## Scripts
-
-```bash
-# Validate plugin structure
-bun run scripts/validate.ts
-
-# Regenerate marketplace index
-bun run scripts/generate-index.ts
-
-# Generate lockfile from current plugins
-bun run scripts/generate-lock.ts
-
-# Validate lockfile matches actual skills
-bun run scripts/validate-lock.ts
-
-# Add an external skill with SHA pinning
-bun run scripts/add-external.ts <repo-url> <skill-path>
-
-# Sync vendored external skills with upstream
-bun run scripts/sync-external.ts
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on creating and submitting plugins.
 
 ## License
 

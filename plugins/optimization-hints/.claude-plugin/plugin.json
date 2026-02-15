@@ -1,0 +1,10 @@
+{
+  "name": "optimization-hints",
+  "version": "0.2.0",
+  "description": "Surface workflow optimization hints when sessions accumulate 8+ tool calls. Skips exploratory prompts to avoid noise.",
+  "hooks": "./hooks.json",
+  "keywords": ["optimization", "workflow", "hints", "productivity", "self-improvement"],
+  "author": {
+    "name": "Agentika"
+  }
+}
