@@ -60,7 +60,7 @@
       "name": "grepika",
       "source": "./plugins/grepika",
       "description": "Token-efficient codebase exploration using grepika MCP server with trigram indexing, FTS5 search, and semantic file discovery.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "Agentika"
       },
@@ -115,6 +115,22 @@
         "macos",
         "terminal-notifier",
         "desktop-alerts"
+      ]
+    },
+    {
+      "name": "optimization-hints",
+      "source": "./plugins/optimization-hints",
+      "description": "Surface workflow optimization hints when sessions accumulate 8+ tool calls. Skips exploratory prompts to avoid noise.",
+      "version": "0.2.0",
+      "author": {
+        "name": "Agentika"
+      },
+      "keywords": [
+        "optimization",
+        "workflow",
+        "hints",
+        "productivity",
+        "self-improvement"
       ]
     },
     {

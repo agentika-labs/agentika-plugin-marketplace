@@ -11,6 +11,13 @@
     "@effect/platform": "^0.70.0",
     "@effect/platform-bun": "^0.50.0"
   },
+  "scripts": {
+    "validate": "bun run scripts/validate.ts",
+    "generate-lock": "bun run scripts/generate-lock.ts",
+    "validate-lock": "bun run scripts/validate-lock.ts --strict",
+    "generate-index": "bun run scripts/generate-index.ts",
+    "sync": "bun run scripts/validate.ts && bun run scripts/generate-lock.ts && bun run scripts/generate-index.ts"
+  },
   "devDependencies": {
     "@types/bun": "^1.3.8",
     "yaml": "^2.8.2"
