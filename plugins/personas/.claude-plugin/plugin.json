@@ -1,0 +1,9 @@
+{
+  "name": "personas",
+  "version": "0.1.0",
+  "description": "Engineering persona commands for specialized domain expertise. Activate backend, frontend, fullstack, infra, or observability personas.",
+  "keywords": ["personas", "engineering-roles", "domain-expertise", "commands"],
+  "author": {
+    "name": "Agentika"
+  }
+}

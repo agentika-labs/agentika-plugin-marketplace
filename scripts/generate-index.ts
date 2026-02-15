@@ -165,6 +165,9 @@ const main = Effect.gen(function* () {
   // Update marketplace
   marketplace.plugins = plugins;
 
+  // Remove deprecated categories field
+  delete (marketplace as unknown as Record<string, unknown>)["categories"];
+
   // Write updated marketplace.json with explicit error handling
   const writeResult = yield* fs
     .writeFileString(

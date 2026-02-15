@@ -7,7 +7,8 @@ description: |
   Invoke when the user says "what changed", "show changes", "change history",
   "what did agent X do", "what was modified", "change journal", "change log",
   "recent changes", or "who changed [file]".
-version: 0.1.0
+version: 0.2.0
+compatibility: "Requires bash and jq. macOS or Linux."
 allowed-tools:
   - Bash
   - Read
@@ -20,54 +21,56 @@ Query the project's change journal for cross-session and cross-workspace awarene
 
 ## Journal Location
 
-All journal data lives in `$CLAUDE_PROJECT_DIR/.claude/journal/`:
+Journal data lives in `~/.claude/projects/<slug>/journal/` (outside the project tree):
 - **`JOURNAL.md`** — Human-readable rolling summary (quick overview)
 - **`entries.jsonl`** — Structured entries (one JSON per line, for filtering)
 - **`summary.txt`** — Compact summary (auto-injected into subagents)
+
+The `$CHANGE_JOURNAL_DIR` environment variable points to this directory (exported by the SessionStart hook).
 
 ## Quick Start
 
 Read the journal summary for a quick overview:
 
 ```bash
-cat "$CLAUDE_PROJECT_DIR/.claude/journal/JOURNAL.md"
+cat "$CHANGE_JOURNAL_DIR/JOURNAL.md"
 ```
 
 ## Query Patterns
 
 ### Filter by workspace
 ```bash
-jq 'select(.workspace == "agent-1")' "$CLAUDE_PROJECT_DIR/.claude/journal/entries.jsonl"
+jq 'select(.workspace == "agent-1")' "$CHANGE_JOURNAL_DIR/entries.jsonl"
 ```
 
 ### Filter by file path
 ```bash
-jq 'select(.file_path | contains("auth"))' "$CLAUDE_PROJECT_DIR/.claude/journal/entries.jsonl"
+jq 'select(.file_path | contains("auth"))' "$CHANGE_JOURNAL_DIR/entries.jsonl"
 ```
 
 ### Filter by time range
 ```bash
-jq 'select(.timestamp >= "2026-02-12")' "$CLAUDE_PROJECT_DIR/.claude/journal/entries.jsonl"
+jq 'select(.timestamp >= "2026-02-12")' "$CHANGE_JOURNAL_DIR/entries.jsonl"
 ```
 
 ### Most frequently changed files
 ```bash
-grep file_change "$CLAUDE_PROJECT_DIR/.claude/journal/entries.jsonl" | jq -r .file_path | sort | uniq -c | sort -rn
+grep file_change "$CHANGE_JOURNAL_DIR/entries.jsonl" | jq -r .file_path | sort | uniq -c | sort -rn
 ```
 
 ### Full diff for a specific session
 ```bash
-jq -r 'select(.session_id == "SESSION_ID" and .type == "session_summary") | .diff_preview' "$CLAUDE_PROJECT_DIR/.claude/journal/entries.jsonl"
+jq -r 'select(.session_id == "SESSION_ID" and .type == "session_summary") | .diff_preview' "$CHANGE_JOURNAL_DIR/entries.jsonl"
 ```
 
 ### What are other agents/workspaces working on?
 ```bash
-jq 'select(.type == "session_summary")' "$CLAUDE_PROJECT_DIR/.claude/journal/entries.jsonl" | jq -r '"\(.workspace): \(.intent)"'
+jq 'select(.type == "session_summary")' "$CHANGE_JOURNAL_DIR/entries.jsonl" | jq -r '"\(.workspace): \(.intent)"'
 ```
 
 ### Changes from a specific workspace
 ```bash
-jq 'select(.workspace == "WORKSPACE" and .type == "file_change")' "$CLAUDE_PROJECT_DIR/.claude/journal/entries.jsonl"
+jq 'select(.workspace == "WORKSPACE" and .type == "file_change")' "$CHANGE_JOURNAL_DIR/entries.jsonl"
 ```
 
 ## Entry Types

@@ -13,11 +13,12 @@ Every plugin must include:
    - `version` - Semantic version (e.g., `0.1.0`)
    - `description` - Brief description of the plugin
    - `author` - Object with `name` and optional `email`
-   - `category` - One of the valid category IDs
 
-2. **`skills/`** - Directory containing one or more skills:
-   - Each skill in its own directory
-   - Each skill directory must have a `SKILL.md` file
+2. **At least one of** the following content types:
+   - `skills/` — Each skill in its own directory with a `SKILL.md` file
+   - `commands/` — Command markdown files
+   - `hooks.json` — Lifecycle hooks (declare with `"hooks": "./hooks.json"` in plugin.json)
+   - `agents/` — Agent definitions
 
 ### SKILL.md Format
 
@@ -64,7 +65,7 @@ Ensure validation passes before submitting.
 ### 4. Submit a Pull Request
 
 1. Create a branch: `git checkout -b add-my-plugin`
-2. Commit your changes: `git commit -m "Add my-plugin to <category>"`
+2. Commit your changes: `git commit -m "Add my-plugin"`
 3. Push: `git push origin add-my-plugin`
 4. Open a PR with:
    - Brief description of the plugin

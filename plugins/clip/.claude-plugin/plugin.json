@@ -1,0 +1,9 @@
+{
+  "name": "clip",
+  "version": "0.1.0",
+  "description": "Copy clean text to clipboard without terminal formatting artifacts. Supports code blocks, text, commands, full responses, and plans.",
+  "keywords": ["clipboard", "copy", "macos", "formatting"],
+  "author": {
+    "name": "Agentika"
+  }
+}

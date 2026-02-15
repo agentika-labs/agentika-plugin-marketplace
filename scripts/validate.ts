@@ -253,6 +253,155 @@ const validateSkillMd = (
   }).pipe(Effect.withSpan("validateSkillMd", { attributes: { skillMdPath } }));
 
 /**
+ * Recursively find all .sh files in a directory.
+ */
+const findShellScripts = (
+  dir: string
+): Effect.Effect<string[], never, FileSystem.FileSystem | Path.Path> =>
+  Effect.gen(function* () {
+    const fs = yield* FileSystem.FileSystem;
+    const path = yield* Path.Path;
+    const results: string[] = [];
+
+    const entries = yield* fs
+      .readDirectory(dir)
+      .pipe(Effect.catchAll(() => Effect.succeed([] as string[])));
+
+    for (const entry of entries) {
+      if (entry.startsWith(".")) continue;
+      const fullPath = path.join(dir, entry);
+      const stat = yield* fs.stat(fullPath).pipe(Effect.either);
+      if (stat._tag === "Left") continue;
+
+      if (stat.right.type === "Directory") {
+        const sub = yield* findShellScripts(fullPath);
+        results.push(...sub);
+      } else if (entry.endsWith(".sh")) {
+        results.push(fullPath);
+      }
+    }
+
+    return results;
+  });
+
+/**
+ * Validate that all .sh files in a plugin directory have executable permissions.
+ */
+const validateShellScriptPermissions = (
+  pluginDir: string,
+  errorsRef: Ref.Ref<ValidationError[]>
+): Effect.Effect<boolean, never, FileSystem.FileSystem | Path.Path> =>
+  Effect.gen(function* () {
+    const fs = yield* FileSystem.FileSystem;
+    const scripts = yield* findShellScripts(pluginDir);
+    let valid = true;
+
+    for (const scriptPath of scripts) {
+      const stat = yield* fs.stat(scriptPath).pipe(Effect.either);
+      if (stat._tag === "Left") continue;
+
+      const mode = stat.right.mode ?? 0;
+      if ((mode & 0o111) === 0) {
+        yield* Ref.update(errorsRef, (errors) => [
+          ...errors,
+          new ValidationError({
+            path: scriptPath,
+            message:
+              "Shell script is not executable (missing +x permission)",
+          }),
+        ]);
+        valid = false;
+      }
+    }
+
+    return valid;
+  }).pipe(
+    Effect.withSpan("validateShellScriptPermissions", {
+      attributes: { pluginDir },
+    })
+  );
+
+/**
+ * Validate that hooks files are discoverable by Claude Code.
+ *
+ * Two checks:
+ * 1. If hooks.json exists at plugin root but not at hooks/hooks.json,
+ *    and plugin.json lacks a "hooks" field → error (hooks silently ignored)
+ * 2. If plugin.json declares a "hooks" field pointing to a nonexistent file → error
+ */
+const validateHooksDiscoverability = (
+  pluginDir: string,
+  errorsRef: Ref.Ref<ValidationError[]>
+): Effect.Effect<boolean, never, FileSystem.FileSystem | Path.Path> =>
+  Effect.gen(function* () {
+    const fs = yield* FileSystem.FileSystem;
+    const path = yield* Path.Path;
+
+    const pluginJsonPath = path.join(pluginDir, ".claude-plugin", "plugin.json");
+    let valid = true;
+
+    // Read plugin.json to check for hooks field
+    const contentResult = yield* fs.readFileString(pluginJsonPath).pipe(
+      Effect.either
+    );
+    if (contentResult._tag === "Left") return true; // Already reported by validatePluginJson
+
+    let plugin: PluginJson;
+    try {
+      plugin = JSON.parse(contentResult.right) as PluginJson;
+    } catch {
+      return true; // Already reported by validatePluginJson
+    }
+
+    const rootHooksPath = path.join(pluginDir, "hooks.json");
+    const defaultHooksPath = path.join(pluginDir, "hooks", "hooks.json");
+
+    const rootHooksExists = yield* fs.exists(rootHooksPath).pipe(
+      Effect.catchAll(() => Effect.succeed(false))
+    );
+    const defaultHooksExists = yield* fs.exists(defaultHooksPath).pipe(
+      Effect.catchAll(() => Effect.succeed(false))
+    );
+
+    // Check 1: hooks.json at root without declaration and no default location
+    if (rootHooksExists && !defaultHooksExists && !plugin.hooks) {
+      yield* Ref.update(errorsRef, (errors) => [
+        ...errors,
+        new ValidationError({
+          path: rootHooksPath,
+          message:
+            'hooks.json exists at plugin root but is not declared in plugin.json. Add "hooks": "./hooks.json" to make it discoverable.',
+        }),
+      ]);
+      valid = false;
+    }
+
+    // Check 2: hooks field references a nonexistent file
+    if (plugin.hooks) {
+      const declaredHooksPath = path.join(pluginDir, plugin.hooks);
+      const declaredExists = yield* fs.exists(declaredHooksPath).pipe(
+        Effect.catchAll(() => Effect.succeed(false))
+      );
+      if (!declaredExists) {
+        yield* Ref.update(errorsRef, (errors) => [
+          ...errors,
+          new ValidationError({
+            path: pluginJsonPath,
+            message: `hooks field references "${plugin.hooks}" but file does not exist`,
+          }),
+        ]);
+        valid = false;
+      }
+    }
+
+    return valid;
+  }).pipe(
+    Effect.withSpan("validateHooksDiscoverability", {
+      attributes: { pluginDir },
+    })
+  );
+
+/**
  * Validate a complete plugin directory (plugin.json + skills).
  */
 const validatePlugin = (
@@ -275,94 +424,133 @@ const validatePlugin = (
       valid = false;
     }
 
-    // Check skills directory exists
+    // Check for plugin content directories (at least one required)
     const skillsDirExists = yield* fs.exists(skillsDir).pipe(
       Effect.catchAll(() => Effect.succeed(false))
     );
-    if (!skillsDirExists) {
-      yield* Ref.update(errorsRef, (errors) => [
-        ...errors,
-        new ValidationError({
-          path: pluginDir,
-          message: "Missing skills directory",
-        }),
-      ]);
-      return false;
-    }
-
-    // Check skills directory is actually a directory
-    const skillsDirStatResult = yield* fs.stat(skillsDir).pipe(Effect.either);
-    if (
-      skillsDirStatResult._tag === "Left" ||
-      skillsDirStatResult.right.type !== "Directory"
-    ) {
-      yield* Ref.update(errorsRef, (errors) => [
-        ...errors,
-        new ValidationError({
-          path: pluginDir,
-          message: "skills is not a directory",
-        }),
-      ]);
-      return false;
-    }
-
-    // Validate each skill directory
-    const skillEntriesResult = yield* fs.readDirectory(skillsDir).pipe(
-      Effect.either
+    const commandsDirExists = yield* fs.exists(path.join(pluginDir, "commands")).pipe(
+      Effect.catchAll(() => Effect.succeed(false))
     );
-    const skillEntries =
-      skillEntriesResult._tag === "Right" ? skillEntriesResult.right : [];
+    const agentsDirExists = yield* fs.exists(path.join(pluginDir, "agents")).pipe(
+      Effect.catchAll(() => Effect.succeed(false))
+    );
 
-    let hasSkills = false;
+    // Check for hooks (either declared in plugin.json or at default locations)
+    const hooksJsonExists = yield* fs.exists(path.join(pluginDir, "hooks.json")).pipe(
+      Effect.catchAll(() => Effect.succeed(false))
+    );
+    const hooksDefaultExists = yield* fs.exists(path.join(pluginDir, "hooks", "hooks.json")).pipe(
+      Effect.catchAll(() => Effect.succeed(false))
+    );
+    const hasHooks = hooksJsonExists || hooksDefaultExists;
 
-    for (const skillName of skillEntries) {
-      const skillDir = path.join(skillsDir, skillName);
-      const skillStatResult = yield* fs.stat(skillDir).pipe(Effect.either);
+    const hasContent = skillsDirExists || commandsDirExists || agentsDirExists || hasHooks;
 
+    if (!hasContent) {
+      yield* Ref.update(errorsRef, (errors) => [
+        ...errors,
+        new ValidationError({
+          path: pluginDir,
+          message: "Plugin must have at least one of: skills/, commands/, agents/, or hooks.json",
+        }),
+      ]);
+      return false;
+    }
+
+    // Validate skills if skills directory exists
+    if (skillsDirExists) {
+      // Check skills directory is actually a directory
+      const skillsDirStatResult = yield* fs.stat(skillsDir).pipe(Effect.either);
       if (
-        skillStatResult._tag === "Left" ||
-        skillStatResult.right.type !== "Directory"
+        skillsDirStatResult._tag === "Left" ||
+        skillsDirStatResult.right.type !== "Directory"
       ) {
-        continue;
-      }
-
-      const skillMdPath = path.join(skillDir, "SKILL.md");
-      const skillMdExists = yield* fs.exists(skillMdPath).pipe(
-        Effect.catchAll(() => Effect.succeed(false))
-      );
-
-      if (!skillMdExists) {
         yield* Ref.update(errorsRef, (errors) => [
           ...errors,
           new ValidationError({
-            path: skillDir,
-            message: "Missing SKILL.md",
+            path: pluginDir,
+            message: "skills is not a directory",
           }),
         ]);
-        valid = false;
-        continue;
+        return false;
       }
 
-      hasSkills = true;
-
-      const skillValid = yield* validateSkillMd(
-        skillMdPath,
-        errorsRef,
-        skillNamesRef
+      // Validate each skill directory
+      const skillEntriesResult = yield* fs.readDirectory(skillsDir).pipe(
+        Effect.either
       );
-      if (!skillValid) {
+      const skillEntries =
+        skillEntriesResult._tag === "Right" ? skillEntriesResult.right : [];
+
+      let hasSkills = false;
+
+      for (const skillName of skillEntries) {
+        const skillDir = path.join(skillsDir, skillName);
+        const skillStatResult = yield* fs.stat(skillDir).pipe(Effect.either);
+
+        if (
+          skillStatResult._tag === "Left" ||
+          skillStatResult.right.type !== "Directory"
+        ) {
+          continue;
+        }
+
+        const skillMdPath = path.join(skillDir, "SKILL.md");
+        const skillMdExists = yield* fs.exists(skillMdPath).pipe(
+          Effect.catchAll(() => Effect.succeed(false))
+        );
+
+        if (!skillMdExists) {
+          yield* Ref.update(errorsRef, (errors) => [
+            ...errors,
+            new ValidationError({
+              path: skillDir,
+              message: "Missing SKILL.md",
+            }),
+          ]);
+          valid = false;
+          continue;
+        }
+
+        hasSkills = true;
+
+        const skillValid = yield* validateSkillMd(
+          skillMdPath,
+          errorsRef,
+          skillNamesRef
+        );
+        if (!skillValid) {
+          valid = false;
+        }
+      }
+
+      if (!hasSkills) {
+        yield* Ref.update(errorsRef, (errors) => [
+          ...errors,
+          new ValidationError({
+            path: skillsDir,
+            message: "skills/ directory exists but contains no skills",
+          }),
+        ]);
         valid = false;
       }
     }
 
-    if (!hasSkills) {
-      yield* Ref.update(errorsRef, (errors) => [
-        ...errors,
-        new ValidationError({
-          path: skillsDir,
-          message: "No skills found",
-        }),
-      ]);
+    // Validate shell script permissions
+    const permsValid = yield* validateShellScriptPermissions(
+      pluginDir,
+      errorsRef
+    );
+    if (!permsValid) {
+      valid = false;
+    }
+
+    // Validate hooks discoverability
+    const hooksValid = yield* validateHooksDiscoverability(
+      pluginDir,
+      errorsRef
+    );
+    if (!hooksValid) {
       valid = false;
     }
 

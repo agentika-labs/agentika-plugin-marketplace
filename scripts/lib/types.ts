@@ -16,6 +16,7 @@ export interface PluginJson {
   version: string;
   description: string;
   author: Author;
+  hooks?: string;
   license?: string;
   keywords?: string[];
   homepage?: string;
@@ -75,13 +76,6 @@ export interface MarketplacePlugin {
   keywords?: string[];
 }
 
-// Category in marketplace.json
-export interface Category {
-  id: string;
-  name: string;
-  description: string;
-}
-
 // Full marketplace.json structure
 export interface Marketplace {
   name: string;
@@ -95,6 +89,5 @@ export interface Marketplace {
     version: string;
     pluginRoot: string;
   };
-  categories: Category[];
   plugins: MarketplacePlugin[];
 }

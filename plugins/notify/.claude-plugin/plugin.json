@@ -1,0 +1,10 @@
+{
+  "name": "notify",
+  "version": "0.1.0",
+  "description": "macOS desktop notifications for Claude Code lifecycle events. Get notified when Claude needs input or completes a task.",
+  "hooks": "./hooks.json",
+  "keywords": ["notifications", "macos", "terminal-notifier", "desktop-alerts"],
+  "author": {
+    "name": "Agentika"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "macOS desktop notifications for Claude Code lifecycle events.",
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title \"⏳ Claude Code\" -message \"Claude needs your input\" -sound frog -sender com.anthropic.claudefordesktop",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title \"🔍 Claude Code\" -message \"Task verified and completed\" -sound frog -sender com.anthropic.claudefordesktop",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}

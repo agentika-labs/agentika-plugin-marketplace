@@ -10,49 +10,142 @@
     "version": "1.0.0",
     "pluginRoot": "plugins"
   },
-  "categories": [
-    {
-      "id": "utilities",
-      "name": "Utilities",
-      "description": "General-purpose utilities and helpers"
-    }
-  ],
   "plugins": [
     {
       "name": "change-journal",
       "source": "./plugins/change-journal",
       "description": "Automatically track file changes across agent sessions for cross-workspace awareness. Provides a queryable journal of what changed, when, where, and by whom.",
+      "version": "0.2.0",
+      "author": {
+        "name": "Agentika"
+      },
+      "keywords": [
+        "change-tracking",
+        "session-history",
+        "multi-agent",
+        "cross-workspace"
+      ]
+    },
+    {
+      "name": "clip",
+      "source": "./plugins/clip",
+      "description": "Copy clean text to clipboard without terminal formatting artifacts. Supports code blocks, text, commands, full responses, and plans.",
       "version": "0.1.0",
       "author": {
         "name": "Agentika"
-      }
+      },
+      "keywords": [
+        "clipboard",
+        "copy",
+        "macos",
+        "formatting"
+      ]
+    },
+    {
+      "name": "deslop",
+      "source": "./plugins/deslop",
+      "description": "Detect and remove AI-generated code patterns (slop) from your branch. Catches unnecessary comments, over-engineering, defensive coding, and style inconsistencies.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Agentika"
+      },
+      "keywords": [
+        "ai-slop",
+        "code-quality",
+        "code-review",
+        "cleanup"
+      ]
     },
     {
       "name": "grepika",
       "source": "./plugins/grepika",
       "description": "Token-efficient codebase exploration using grepika MCP server with trigram indexing, FTS5 search, and semantic file discovery.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Agentika"
-      }
+      },
+      "keywords": [
+        "code-search",
+        "mcp",
+        "indexing",
+        "codebase-exploration"
+      ]
     },
     {
       "name": "humanika",
       "source": "./plugins/humanika",
       "description": "Detect and fix AI writing patterns to make text sound like it was written by a real person with opinions, personality, and specific knowledge.",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": {
         "name": "Agentika"
-      }
+      },
+      "keywords": [
+        "ai-writing",
+        "writing-quality",
+        "prose",
+        "natural-language"
+      ]
     },
     {
       "name": "jj",
       "source": "./plugins/jj",
       "description": "JJ (Jujutsu) version control workflows for AI agentic development with Git colocation, parallel workspaces, and conflict resolution.",
+      "version": "0.1.1",
+      "author": {
+        "name": "Agentika"
+      },
+      "keywords": [
+        "jujutsu",
+        "vcs",
+        "git",
+        "parallel-agents",
+        "workspaces"
+      ]
+    },
+    {
+      "name": "notify",
+      "source": "./plugins/notify",
+      "description": "macOS desktop notifications for Claude Code lifecycle events. Get notified when Claude needs input or completes a task.",
       "version": "0.1.0",
       "author": {
         "name": "Agentika"
-      }
+      },
+      "keywords": [
+        "notifications",
+        "macos",
+        "terminal-notifier",
+        "desktop-alerts"
+      ]
+    },
+    {
+      "name": "personas",
+      "source": "./plugins/personas",
+      "description": "Engineering persona commands for specialized domain expertise. Activate backend, frontend, fullstack, infra, or observability personas.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Agentika"
+      },
+      "keywords": [
+        "personas",
+        "engineering-roles",
+        "domain-expertise",
+        "commands"
+      ]
+    },
+    {
+      "name": "prompt-engineering",
+      "source": "./plugins/prompt-engineering",
+      "description": "Socratic reasoning for deep analysis and automatic task completion verification.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Agentika"
+      },
+      "keywords": [
+        "reasoning",
+        "verification",
+        "socratic",
+        "task-completion"
+      ]
     }
   ]
 }

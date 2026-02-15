@@ -1,0 +1,10 @@
+{
+  "name": "prompt-engineering",
+  "version": "0.1.0",
+  "description": "Socratic reasoning for deep analysis and automatic task completion verification.",
+  "hooks": "./hooks.json",
+  "keywords": ["reasoning", "verification", "socratic", "task-completion"],
+  "author": {
+    "name": "Agentika"
+  }
+}

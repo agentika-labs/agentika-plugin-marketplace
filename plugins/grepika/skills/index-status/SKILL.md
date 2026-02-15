@@ -4,7 +4,8 @@ description: |
   Use this skill when the user asks to "check index status",
   "is the index healthy", "index diagnostics", "search index health",
   or mentions keywords related to verifying grepika search index state.
-version: 1.0.0
+version: 1.0.1
+compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
 agent: Explore

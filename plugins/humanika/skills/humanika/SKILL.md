@@ -6,7 +6,6 @@ description: |
   "make this more natural", "rewrite to sound human",
   or mentions AI-sounding text, robotic writing, or Claude-speak.
 version: 0.2.0
-disable-model-invocation: true
 allowed-tools:
   - Read
   - Write

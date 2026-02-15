@@ -19,13 +19,7 @@ sudo apt install jq
 
 ## Installation
 
-After adding the plugin to your Claude Code project, **make the hook scripts executable**:
-
-```bash
-chmod +x plugins/change-journal/hooks/scripts/*.sh
-```
-
-Without this step, the hooks will silently fail and nothing will be tracked.
+Add the plugin to your Claude Code project. All hook scripts are tracked with executable permissions in git, so no manual `chmod` is needed after cloning.
 
 ## How it works
 
@@ -50,7 +44,7 @@ On each session start, `journal-cleanup.sh` trims entries older than 7 days and 
 
 ## Storage
 
-All data lives in `.claude/journal/` inside your project directory:
+All data lives in `~/.claude/projects/<slug>/journal/`, outside the project directory:
 
 | File | Purpose |
 |------|---------|
@@ -59,7 +53,9 @@ All data lives in `.claude/journal/` inside your project directory:
 | `summary.txt` | Compact summary (injected into subagents) |
 | `entries.lock/` | Directory-based lock for concurrent write safety |
 
-The journal directory is created automatically on first use.
+The slug is derived from the project path (e.g., `/Users/you/myproject` becomes `-Users-you-myproject`), matching Claude's own per-project storage convention.
+
+The journal directory is created automatically on first use. Existing data from the old location (`.claude/journal/` inside the project) is migrated automatically on first session start.
 
 ## Querying
 
@@ -69,20 +65,20 @@ Quick examples:
 
 ```bash
 # Read the rolling summary
-cat .claude/journal/JOURNAL.md
+cat "$CHANGE_JOURNAL_DIR/JOURNAL.md"
 
 # Recent file changes
-jq 'select(.type == "file_change")' .claude/journal/entries.jsonl | tail -20
+jq 'select(.type == "file_change")' "$CHANGE_JOURNAL_DIR/entries.jsonl" | tail -20
 
 # What are other workspaces working on?
-jq -r 'select(.type == "session_summary") | "\(.workspace): \(.intent)"' .claude/journal/entries.jsonl
+jq -r 'select(.type == "session_summary") | "\(.workspace): \(.intent)"' "$CHANGE_JOURNAL_DIR/entries.jsonl"
 ```
 
 ## Hook reference
 
 | Hook | Event | Mode | What It Does |
 |------|-------|------|-------------|
-| `on-session-start.sh` | SessionStart | sync | Runs cleanup, loads JOURNAL.md into context |
+| `on-session-start.sh` | SessionStart | sync | Migrates old data, runs cleanup, loads JOURNAL.md into context |
 | `on-file-change.sh` | PostToolUse (Edit/Write) | async | Records file change entry |
 | `on-stop.sh` | Stop | sync | Creates session summary with intent + diff |
 | `on-subagent-start.sh` | SubagentStart | sync | Injects summary.txt into subagent context |

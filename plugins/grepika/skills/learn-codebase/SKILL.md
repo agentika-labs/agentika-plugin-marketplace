@@ -5,13 +5,13 @@ description: |
   "give me a codebase overview", "onboard me to this project",
   "explain the architecture", or mentions keywords related to
   understanding codebase structure and architecture.
-version: 1.0.0
+version: 1.0.1
+compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
 agent: Explore
 allowed-tools:
   - mcp__grepika__search
-  - mcp__grepika__relevant
   - mcp__grepika__toc
   - mcp__grepika__stats
   - mcp__grepika__outline
@@ -44,7 +44,7 @@ If any tool returns "No active workspace", call `mcp__grepika__add_workspace` wi
    - Identify main directories and their purposes
 
 3. **Find key files for the area**
-   - Use `mcp__grepika__relevant` to find important files
+   - Use `mcp__grepika__search` to find important files
    - For general overview, search for: "main entry point", "configuration", "core logic"
    - For specific areas, search for that topic
 

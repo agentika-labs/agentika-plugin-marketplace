@@ -26,13 +26,14 @@ plugins/                    # All plugins live here
   <plugin-name>/
     .claude-plugin/
       plugin.json           # Plugin metadata (required)
-    skills/                 # Skills directory (required, at least one skill)
+    skills/                 # Optional: skill definitions (at least one content type required)
       <skill-name>/
-        SKILL.md            # Skill definition with YAML frontmatter (required)
+        SKILL.md            # Skill definition with YAML frontmatter
         examples/           # Optional example files
         references/         # Optional supplementary docs
-    agents/                 # Optional agent definitions
-    commands/               # Optional command definitions
+    commands/               # Optional: command definitions
+    agents/                 # Optional: agent definitions
+    hooks.json              # Optional: lifecycle hooks
   external/                 # Vendored external skills
     <org>/<repo>/
       .source.json          # Tracks origin URL, SHA, synced timestamp
@@ -69,12 +70,9 @@ Located at `.claude-plugin/plugin.json` inside each plugin directory:
   "name": "my-plugin",
   "version": "0.1.0",
   "description": "What this plugin does",
-  "author": { "name": "Author Name" },
-  "category": "utilities"
+  "author": { "name": "Author Name" }
 }
 ```
-
-Valid categories: `utilities` (only one currently).
 
 ### SKILL.md Frontmatter Required Fields
 ```yaml
@@ -91,12 +89,13 @@ Required: `name`, `description`, `version`. Optional: `license`, `metadata`.
 
 ### Validation Rules (what `validate.ts` enforces)
 1. Each plugin directory must have a `.claude-plugin/plugin.json`
-2. Each plugin must have a `skills/` directory with at least one skill
+2. Each plugin must have at least one of: `skills/`, `commands/`, `agents/`, or `hooks.json`
 3. Each skill directory must contain a `SKILL.md` with valid YAML frontmatter
 4. Names must be kebab-case, versions must be semver
 5. Skill names must be globally unique across all plugins
-6. `.claude-plugin/plugin.json` must include: `name`, `version`, `description`, `author.name`, `category`
-7. `category` must be one of the valid category IDs
+6. `.claude-plugin/plugin.json` must include: `name`, `version`, `description`, `author.name`
+7. Shell scripts (`.sh`) must have executable permissions
+8. Hooks declared in `plugin.json` must reference an existing file
 
 ### Lockfile
 `marketplace.lock` tracks all skills. Internal skills are marked `"internal"`, external vendored skills include `origin` URL and `sha`. CI validates lockfile consistency in strict mode.

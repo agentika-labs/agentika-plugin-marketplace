@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/on-session-start.sh",
+            "command": "${CLAUDE_PLUGIN_ROOT}/skills/change-journal/scripts/on-session-start.sh",
             "timeout": 10,
             "statusMessage": "Loading change journal..."
           }
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/on-session-start.sh",
+            "command": "${CLAUDE_PLUGIN_ROOT}/skills/change-journal/scripts/on-session-start.sh",
             "timeout": 10,
             "statusMessage": "Loading change journal..."
           }
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/on-subagent-start.sh",
+            "command": "${CLAUDE_PLUGIN_ROOT}/skills/change-journal/scripts/on-subagent-start.sh",
             "timeout": 5
           }
         ]
@@ -42,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/on-file-change.sh",
+            "command": "${CLAUDE_PLUGIN_ROOT}/skills/change-journal/scripts/on-file-change.sh",
             "timeout": 10,
             "async": true
           }
@@ -54,7 +54,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/on-stop.sh",
+            "command": "${CLAUDE_PLUGIN_ROOT}/skills/change-journal/scripts/on-stop.sh",
             "timeout": 30
           }
         ]
@@ -65,7 +65,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/on-subagent-stop.sh",
+            "command": "${CLAUDE_PLUGIN_ROOT}/skills/change-journal/scripts/on-subagent-stop.sh",
             "timeout": 10,
             "async": true
           }

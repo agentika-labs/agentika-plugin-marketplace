@@ -1,7 +1,9 @@
 {
   "name": "change-journal",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Automatically track file changes across agent sessions for cross-workspace awareness. Provides a queryable journal of what changed, when, where, and by whom.",
+  "hooks": "./hooks.json",
+  "keywords": ["change-tracking", "session-history", "multi-agent", "cross-workspace"],
   "author": {
     "name": "Agentika"
   }

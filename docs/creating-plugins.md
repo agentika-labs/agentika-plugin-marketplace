@@ -11,7 +11,11 @@ This guide covers how to author plugins for the Agentika Marketplace.
 
 2. Create `plugins/my-plugin/.claude-plugin/plugin.json` with your metadata
 
-3. Create `plugins/my-plugin/skills/my-skill/SKILL.md` with your skill definition
+3. Add content — at least one of:
+   - `skills/my-skill/SKILL.md` — a skill definition
+   - `commands/my-command.md` — a command definition
+   - `hooks.json` — lifecycle hooks
+   - `agents/my-agent.md` — an agent definition
 
 4. Validate:
    ```bash
@@ -20,15 +24,21 @@ This guide covers how to author plugins for the Agentika Marketplace.
 
 ## Plugin Structure
 
+A plugin must have `.claude-plugin/plugin.json` and at least one of: `skills/`, `commands/`, `agents/`, or a `hooks.json`.
+
 ```
 my-plugin/
 ├── .claude-plugin/
 │   └── plugin.json       # Required: Plugin metadata
+├── skills/               # Optional: Skill definitions
+│   └── my-skill/
+│       └── SKILL.md
+├── commands/             # Optional: Command definitions
+│   └── my-command.md
 ├── agents/               # Optional: Agent definitions
 │   └── my-agent.md
-└── skills/
-    └── my-skill/
-        └── SKILL.md      # Required: Skill definition
+├── hooks.json            # Optional: Lifecycle hooks
+└── README.md             # Recommended
 ```
 
 ## plugin.json Schema
@@ -46,7 +56,6 @@ Located at `.claude-plugin/plugin.json` inside each plugin directory:
   },
   "license": "MIT",
   "keywords": ["keyword1", "keyword2"],
-  "category": "utilities",
   "homepage": "https://github.com/you/my-plugin",
   "repository": "https://github.com/you/my-plugin"
 }
@@ -60,22 +69,16 @@ Located at `.claude-plugin/plugin.json` inside each plugin directory:
 | `version` | string | Semantic version (x.y.z) |
 | `description` | string | Brief description (1-2 sentences) |
 | `author` | object | Author info with `name`, optional `email` |
-| `category` | string | One of the valid category IDs |
 
 ### Optional Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `license` | string | License identifier (default: MIT) |
-| `keywords` | string[] | Searchable keywords |
+| `keywords` | string[] | Searchable keywords for discovery |
+| `hooks` | string | Relative path to hooks.json (e.g., `"./hooks.json"`) |
 | `homepage` | string | Documentation URL |
 | `repository` | string | Source code URL |
-
-### Valid Categories
-
-The `category` field is metadata in `plugin.json` — it does not correspond to a filesystem directory. Valid values:
-
-- `utilities` - General utilities
 
 ## SKILL.md Format
 
@@ -109,6 +112,66 @@ const result = await doSomething();
 |----------|----------|-------------|
 | `MY_API_KEY` | Yes | API key for the service |
 ```
+
+## Hooks
+
+Hooks let plugins react to Claude Code lifecycle events (session start, stop, notifications, file changes, etc.). Place a `hooks.json` at the plugin root and declare it in `plugin.json`:
+
+```json
+{
+  "hooks": "./hooks.json"
+}
+```
+
+If `hooks.json` is at the default Claude Code location (`hooks/hooks.json`), the declaration is optional. Otherwise, the `"hooks"` field in `plugin.json` is required for discoverability.
+
+A hooks-only plugin (no skills, commands, or agents) is valid — for example, a notification plugin that only uses lifecycle hooks.
+
+### hooks.json Format
+
+```json
+{
+  "description": "What these hooks do",
+  "hooks": {
+    "EventName": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "your-command-here",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Hook types: `"command"` (runs a shell command) or `"agent"` (runs an agent prompt with a timeout).
+
+### Shell Scripts in Hooks
+
+Any `.sh` files in the plugin must have executable permissions (`chmod +x`). The validator checks this automatically.
+
+## Commands
+
+Commands are markdown files in the `commands/` directory that users invoke via `/command-name`. Each command file has YAML frontmatter with a `description` field:
+
+```markdown
+---
+description: What this command does
+---
+
+Your command prompt content here. Use `$ARGUMENTS` for user input.
+```
+
+Commands are simpler than skills — they don't require `name` or `version` in frontmatter. The filename becomes the command name.
+
+## Agents
+
+Agent definitions go in the `agents/` directory as markdown files. Use agents for specialized sub-tasks that need their own context.
 
 ## Examples Directory
 

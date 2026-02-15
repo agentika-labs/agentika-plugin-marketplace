@@ -16,7 +16,9 @@ if command -v jq &>/dev/null; then
 fi
 
 # --- Paths ---
-JOURNAL_DIR="$CLAUDE_PROJECT_DIR/.claude/journal"
+CLAUDE_PROJECTS_SLUG=$(printf '%s' "$CLAUDE_PROJECT_DIR" | tr '/' '-')
+CLAUDE_PROJECTS_DIR="$HOME/.claude/projects/$CLAUDE_PROJECTS_SLUG"
+JOURNAL_DIR="$CLAUDE_PROJECTS_DIR/journal"
 ENTRIES_FILE="$JOURNAL_DIR/entries.jsonl"
 LOCK_DIR="$JOURNAL_DIR/entries.lock"
 

@@ -1,7 +1,8 @@
 {
   "name": "jj",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JJ (Jujutsu) version control workflows for AI agentic development with Git colocation, parallel workspaces, and conflict resolution.",
+  "keywords": ["jujutsu", "vcs", "git", "parallel-agents", "workspaces"],
   "author": {
     "name": "Agentika"
   }

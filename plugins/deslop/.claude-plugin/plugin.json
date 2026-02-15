@@ -1,0 +1,9 @@
+{
+  "name": "deslop",
+  "version": "0.1.0",
+  "description": "Detect and remove AI-generated code patterns (slop) from your branch. Catches unnecessary comments, over-engineering, defensive coding, and style inconsistencies.",
+  "keywords": ["ai-slop", "code-quality", "code-review", "cleanup"],
+  "author": {
+    "name": "Agentika"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "description": "Verifying task completion",
+  "hooks": {
+    "TaskCompleted": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "agent",
+            "timeout": 120,
+            "statusMessage": "Verifying task completion...",
+            "prompt": "You are a code reviewer verifying a task is truly complete before it's marked done.\n\n<input>\n$ARGUMENTS\n</input>\n\n<steps>\n1. EXTRACT CONTEXT: Parse <input> for `task_subject`, `task_description` (may be absent), and `transcript_path`.\n\n2. READ TRANSCRIPT: Read the tail (last 150 lines) of the JSONL file. Identify: what was requested, what files were modified (Edit/Write calls), what commands ran and their outputs.\n\n3. CLASSIFY: Is this informational (research, reading, planning, Q&A) or implementation (writing/modifying code, fixing bugs, building features)?\n   - If informational: return {\"ok\": true}.\n\n4. INSPECT MODIFIED FILES: Read each file that was created or modified. Then reason through:\n\n<socratic_verification>\n(a) What concrete evidence shows the implementation is incomplete? Look for: TODO/FIXME/HACK in core logic the task requested, empty function bodies, `throw new Error('Not implemented')` or equivalent stubs, missing exports for new code, import paths to nonexistent files.\n\n(b) For each finding: Is this in core logic the task explicitly asked for, or a peripheral utility? Can I point to a specific line as evidence?\n\n(c) Were tests run and did they pass? If the task required tests and none were written, or tests failed and weren't fixed, that's a finding.\n\n(d) For each surviving finding: Would a pragmatic senior engineer ship this, or insist it's fixed first?\n</socratic_verification>\n\nOnly findings that survive all questions count as blocking.\n\n5. DECIDE:\n   - No blocking issues: {\"ok\": true}\n   - Blocking issues: {\"ok\": false, \"reason\": \"<specific issues with file paths>\"}\n</steps>\n\n<examples>\nPass: Task \"Add email validation.\" Claude edited SignupForm.tsx with regex validation, no placeholders, tests pass. → {\"ok\": true}\n\nFail: Task \"Implement payment module.\" Claude created processor.ts but the function body is `// TODO: integrate with Stripe API` returning a hardcoded response. → {\"ok\": false, \"reason\": \"src/payments/processor.ts: processPayment() contains TODO placeholder — core logic not implemented.\"}\n</examples>\n\n<rules>\n- Practical, not pedantic: TODOs in non-critical paths are acceptable. Only flag TODOs in core logic the task requested.\n- Vague task descriptions → be lenient. Can't verify unspecified expectations.\n- Never block on style, naming, documentation. Only functional correctness.\n- If you can't determine what was modified, return {\"ok\": true} — benefit of the doubt.\n</rules>"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -5,15 +5,14 @@ description: |
   "check blast radius", "what would break if I change this",
   "refactoring safety analysis", or mentions keywords related to
   change impact assessment and dependency tracing.
-version: 1.0.0
+version: 1.0.1
+compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
 agent: Explore
 allowed-tools:
   - mcp__grepika__search
-  - mcp__grepika__relevant
   - mcp__grepika__refs
-  - mcp__grepika__related
   - mcp__grepika__outline
   - mcp__grepika__context
   - mcp__grepika__get
@@ -41,7 +40,7 @@ If any tool returns "No active workspace", call `mcp__grepika__add_workspace` wi
    - Categorize by type: imports, calls, type references, extensions
 
 2. **Discover dependent files**
-   - Use `mcp__grepika__related` to find connected modules
+   - Use `mcp__grepika__refs` to find connected modules
    - Map the dependency graph outward from the target
 
 3. **Search for similar patterns**

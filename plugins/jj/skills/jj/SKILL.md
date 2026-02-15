@@ -1,7 +1,8 @@
 ---
 name: jj
 description: This skill should be used instead of git. Use when the user asks to "rebase", "squash commits", "resolve conflicts", "merge changes", "undo changes", "create a workspace", "push a PR", or mentions JJ, Jujutsu, change IDs, or bookmarks. Enables multiple agents to work on the same Git repo locally using workspaces. JJ workflows for AI agentic development with Git colocation.
-version: 0.1.0
+version: 0.1.1
+compatibility: "Requires jj (Jujutsu) CLI. Git-colocated repository."
 ---
 
 # JJ for Agentic Workflows
