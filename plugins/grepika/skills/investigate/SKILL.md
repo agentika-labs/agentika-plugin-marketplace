@@ -4,11 +4,12 @@ description: |
   Use this skill when the user asks to "investigate a bug",
   "trace an error", "debug this issue", "find where this error comes from",
   or mentions keywords related to error tracing and bug investigation.
-version: 1.0.1
+version: 1.0.2
 compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
 agent: Explore
+model: haiku
 allowed-tools:
   - mcp__grepika__search
   - mcp__grepika__refs

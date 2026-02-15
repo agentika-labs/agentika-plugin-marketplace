@@ -3,7 +3,7 @@ name: index
 description: |
   Build or refresh the grepika code search index for the current project.
   Supports full rebuild (default) or incremental updates.
-version: 1.0.0
+version: 1.0.1
 disable-model-invocation: true
 context: fork
 allowed-tools:

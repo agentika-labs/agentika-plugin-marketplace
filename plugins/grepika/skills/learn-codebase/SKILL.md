@@ -5,11 +5,12 @@ description: |
   "give me a codebase overview", "onboard me to this project",
   "explain the architecture", or mentions keywords related to
   understanding codebase structure and architecture.
-version: 1.0.1
+version: 1.0.2
 compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
 agent: Explore
+model: haiku
 allowed-tools:
   - mcp__grepika__search
   - mcp__grepika__toc

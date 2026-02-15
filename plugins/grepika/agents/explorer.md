@@ -37,7 +37,7 @@ description: |
   Proactively use this agent when exploring codebases where grepika is configured.
   </commentary>
   </example>
-model: sonnet
+model: haiku
 color: cyan
 tools:
   - mcp__grepika__search

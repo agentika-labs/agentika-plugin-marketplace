@@ -5,11 +5,12 @@ description: |
   "check blast radius", "what would break if I change this",
   "refactoring safety analysis", or mentions keywords related to
   change impact assessment and dependency tracing.
-version: 1.0.1
+version: 1.0.2
 compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
 agent: Explore
+model: haiku
 allowed-tools:
   - mcp__grepika__search
   - mcp__grepika__refs

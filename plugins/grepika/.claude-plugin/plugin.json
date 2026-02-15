@@ -1,6 +1,6 @@
 {
   "name": "grepika",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Token-efficient codebase exploration using grepika MCP server with trigram indexing, FTS5 search, and semantic file discovery.",
   "keywords": ["code-search", "mcp", "indexing", "codebase-exploration"],
   "author": {
