@@ -1,10 +1,10 @@
 ---
 name: investigate
 description: |
-  Use this skill when the user asks to "investigate a bug",
+  This skill should be used when the user asks to "investigate a bug",
   "trace an error", "debug this issue", "find where this error comes from",
   or mentions keywords related to error tracing and bug investigation.
-version: 1.0.2
+version: 1.1.0
 compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
@@ -89,3 +89,10 @@ Provide a structured investigation report:
 - Look for multiple occurrences - the same error may be thrown in different places
 - Check for error handling that might swallow or transform the original error
 - Note any logging that could help reproduce the issue
+
+## Additional Resources
+
+See `references/error-patterns.md` for:
+- Common error message signatures and their meanings
+- Call chain analysis techniques
+- Error handling patterns to watch for

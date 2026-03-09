@@ -1,10 +1,10 @@
 ---
 name: index-status
 description: |
-  Use this skill when the user asks to "check index status",
+  This skill should be used when the user asks to "check index status",
   "is the index healthy", "index diagnostics", "search index health",
   or mentions keywords related to verifying grepika search index state.
-version: 1.0.2
+version: 1.1.0
 compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
@@ -95,3 +95,10 @@ If any tool returns "No active workspace", call `mcp__grepika__add_workspace` wi
 - A healthy index should cover all source files
 - Binary files and node_modules should be excluded
 - If in doubt, run `/index` to force a full rebuild
+
+## Additional Resources
+
+See `references/troubleshooting.md` for:
+- Common index issues and solutions
+- Health check procedures
+- Index maintenance best practices

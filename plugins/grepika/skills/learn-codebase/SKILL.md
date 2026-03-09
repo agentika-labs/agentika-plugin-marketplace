@@ -1,11 +1,11 @@
 ---
 name: learn-codebase
 description: |
-  Use this skill when the user asks to "learn this codebase",
+  This skill should be used when the user asks to "learn this codebase",
   "give me a codebase overview", "onboard me to this project",
   "explain the architecture", or mentions keywords related to
   understanding codebase structure and architecture.
-version: 1.0.2
+version: 1.1.0
 compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
@@ -129,3 +129,10 @@ If any tool returns "No active workspace", call `mcp__grepika__add_workspace` wi
 - Highlight non-obvious architectural decisions
 - Note any gotchas or common confusion points
 - Suggest the most impactful files to read first
+
+## Additional Resources
+
+See `references/onboarding-strategies.md` for:
+- Codebase type patterns (monolith, microservices, library, CLI)
+- Top-down vs bottom-up learning approaches
+- Output templates for quick overview and deep dive

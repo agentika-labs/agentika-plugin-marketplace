@@ -1,10 +1,12 @@
 {
   "version": 1,
-  "generated": "2026-02-15T22:30:09.295Z",
+  "generated": "2026-03-09T21:56:19.543Z",
   "skills": {
     "plugins/change-journal/skills/change-journal": "internal",
     "plugins/clip/skills/clip": "internal",
     "plugins/deslop/skills/deslop": "internal",
+    "plugins/grepika/skills/diff-files": "internal",
+    "plugins/grepika/skills/find-usages": "internal",
     "plugins/grepika/skills/impact": "internal",
     "plugins/grepika/skills/index-status": "internal",
     "plugins/grepika/skills/investigate": "internal",

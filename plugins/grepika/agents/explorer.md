@@ -37,6 +37,24 @@ description: |
   Proactively use this agent when exploring codebases where grepika is configured.
   </commentary>
   </example>
+
+  <example>
+  Context: User wants to compare two files to understand what changed.
+  user: "Compare the old and new config files to see what changed"
+  assistant: "I'll use grepika:explorer to diff the files and explain the differences."
+  <commentary>
+  The diff tool provides token-efficient file comparison with unified diff output.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User wants to understand the complete call hierarchy for a function.
+  user: "Build a call graph for the handleRequest function"
+  assistant: "Let me use grepika:explorer to trace all callers and build the complete call hierarchy."
+  <commentary>
+  Using refs recursively to build call graphs is a key grepika workflow for understanding code flow.
+  </commentary>
+  </example>
 model: haiku
 color: cyan
 tools:
@@ -214,3 +232,36 @@ Structure your responses as:
 ```
 
 Always include specific `file:line` references so the user can navigate directly to relevant code.
+
+## Advanced Workflows
+
+### File Comparison
+
+When comparing files:
+```
+1. diff(file_a, file_b) → unified diff
+2. Categorize changes: additions, deletions, modifications
+3. Identify semantic meaning of changes
+4. Report risk level and backward compatibility
+```
+
+### Call Graph Building
+
+When building call hierarchies:
+```
+1. refs(symbol) → find all references
+2. Filter for call sites vs definitions vs imports
+3. For each caller, recursively call refs()
+4. Stop at entry points or depth limit (3-4 levels)
+5. Present as ASCII tree or table
+```
+
+Example output format:
+```
+handleRequest
+├── validateInput (called by handleRequest:42)
+│   └── parseBody (called by validateInput:15)
+└── processData (called by handleRequest:50)
+    ├── fetchFromDB (called by processData:23)
+    └── transformResult (called by processData:30)
+```

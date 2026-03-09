@@ -1,11 +1,11 @@
 ---
 name: impact
 description: |
-  Use this skill when the user asks to "analyze impact of changes",
+  This skill should be used when the user asks to "analyze impact of changes",
   "check blast radius", "what would break if I change this",
   "refactoring safety analysis", or mentions keywords related to
   change impact assessment and dependency tracing.
-version: 1.0.2
+version: 1.1.0
 compatibility: "Requires grepika MCP server."
 disable-model-invocation: true
 context: fork
@@ -98,3 +98,10 @@ Provide a structured impact report:
 - Watch for dynamic access patterns that static analysis misses
 - Consider re-exports and barrel files that might hide dependencies
 - Check for string-based references (config files, env vars, etc.)
+
+## Additional Resources
+
+See `references/risk-assessment.md` for:
+- Risk severity matrix and impact factors
+- Safe refactoring patterns and checklists
+- Test coverage assessment methodology
