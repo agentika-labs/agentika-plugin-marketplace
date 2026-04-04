@@ -1,16 +1,19 @@
 {
   "version": 1,
-  "generated": "2026-03-09T21:56:19.543Z",
+  "generated": "2026-04-04T18:35:50.632Z",
   "skills": {
     "plugins/change-journal/skills/change-journal": "internal",
     "plugins/clip/skills/clip": "internal",
     "plugins/deslop/skills/deslop": "internal",
+    "plugins/grepika/skills/apply-pattern": "internal",
+    "plugins/grepika/skills/architecture": "internal",
     "plugins/grepika/skills/diff-files": "internal",
     "plugins/grepika/skills/find-usages": "internal",
     "plugins/grepika/skills/impact": "internal",
     "plugins/grepika/skills/index-status": "internal",
     "plugins/grepika/skills/investigate": "internal",
     "plugins/grepika/skills/learn-codebase": "internal",
+    "plugins/grepika/skills/study": "internal",
     "plugins/humanika/skills/humanika": "internal",
     "plugins/jj/skills/jj": "internal",
     "plugins/prompt-engineering/skills/socratic-reasoning": "internal"

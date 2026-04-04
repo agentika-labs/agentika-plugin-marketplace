@@ -36,8 +36,9 @@ If any tool returns "No active workspace", call `mcp__grepika__add_workspace` wi
 ## Investigation Workflow
 
 1. **Search for the error/keyword**
-   - Use `mcp__grepika__search` to find matches for the error message or keywords
-   - Try both exact matches and semantic variations
+   - Use `mcp__grepika__search` with `mode: "grep"` for exact error message strings (regex patterns)
+   - Use `mcp__grepika__search` with `mode: "fts"` for semantic/natural language variations (e.g., related concepts, similar error descriptions)
+   - Use `mode: "combined"` (default) when you're unsure which approach fits best
 
 2. **Get context around matches**
    - Use `mcp__grepika__context` to see surrounding code for each match

@@ -46,15 +46,13 @@ If any tool returns "No active workspace", call `mcp__grepika__add_workspace` wi
    - Use `mcp__grepika__refs` with the symbol name
    - Capture file paths, line numbers, and match context
 
-2. **Categorize references**
-   - **Definition**: Where the symbol is defined
-   - **Import**: Where the symbol is imported
-   - **Call site**: Where functions are called
-   - **Type reference**: Where types are used in signatures
-   - **Extension**: Where classes are extended
+2. **Group results by `ref_type`**
+   - The `refs` tool returns a `ref_type` field for each reference: `definition`, `import`, `type_usage`, `usage`
+   - Group results by this field — do NOT manually re-categorize
+   - Count references per type and per file
 
 3. **Build call hierarchy** (for functions)
-   - Identify callers of the target function
+   - Filter for references with `ref_type: "usage"` to find callers (skip definitions and imports)
    - Use `mcp__grepika__refs` on each caller to build the chain upward
    - Stop when reaching entry points or after 3 levels
 
@@ -77,12 +75,12 @@ If any tool returns "No active workspace", call `mcp__grepika__add_workspace` wi
 - **Signature**: [brief signature if applicable]
 
 ### Usage Summary
-| Category | Count | Files |
+| ref_type | Count | Files |
 |----------|-------|-------|
-| Imports | [count] | [unique file count] |
-| Call sites | [count] | [unique file count] |
-| Type references | [count] | [unique file count] |
-| Extensions | [count] | [unique file count] |
+| definition | [count] | [unique file count] |
+| import | [count] | [unique file count] |
+| type_usage | [count] | [unique file count] |
+| usage | [count] | [unique file count] |
 
 ### Call Hierarchy (if applicable)
 
