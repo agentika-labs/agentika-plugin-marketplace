@@ -17,6 +17,12 @@ import { Effect, Console } from "effect";
 import { FileSystem, Path } from "@effect/platform";
 import { BunContext, BunRuntime } from "@effect/platform-bun";
 import type { ExternalSkillSource } from "./lib/types";
+import {
+  isSafeRepositorySubpath,
+  isValidSkillName,
+  parseRepositoryUrl,
+  runCommand,
+} from "./lib/git-source";
 
 const ROOT = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
 const EXTERNAL_DIR = `${ROOT}/plugins/external`;
@@ -27,31 +33,6 @@ interface SyncResult {
   newSha: string;
   updated: boolean;
 }
-
-/**
- * Execute a shell command and return stdout.
- */
-const exec = (cmd: string, cwd?: string): Effect.Effect<string, Error, never> =>
-  Effect.tryPromise({
-    try: async () => {
-      const proc = Bun.spawn(["sh", "-c", cmd], {
-        cwd,
-        stdout: "pipe",
-        stderr: "pipe",
-      });
-
-      const exitCode = await proc.exited;
-      const stdout = await new Response(proc.stdout).text();
-      const stderr = await new Response(proc.stderr).text();
-
-      if (exitCode !== 0) {
-        throw new Error(`Command failed: ${cmd}\n${stderr}`);
-      }
-
-      return stdout.trim();
-    },
-    catch: (e) => new Error(String(e)),
-  });
 
 /**
  * Find all .source.json files in external plugins directory.
@@ -176,6 +157,22 @@ const syncSource = (
       return null;
     }
 
+    if (!parseRepositoryUrl(source.url)) {
+      return yield* Effect.fail(new Error(`Invalid repository URL in ${sourceJsonPath}`));
+    }
+
+    const paths = source.paths || [];
+    if (
+      paths.length === 0 ||
+      paths.some(
+        (trackedPath) =>
+          !isSafeRepositorySubpath(trackedPath) ||
+          !isValidSkillName(path.basename(trackedPath)),
+      )
+    ) {
+      return yield* Effect.fail(new Error(`Invalid tracked paths in ${sourceJsonPath}`));
+    }
+
     const sourceDir = path.dirname(sourceJsonPath);
     const relPath = sourceDir.replace(ROOT + "/", "");
 
@@ -192,7 +189,7 @@ const syncSource = (
 
     try {
       // Clone repository (shallow)
-      yield* exec(`git clone --depth 1 "${source.url}" repo`, tmpDir).pipe(
+      yield* runCommand(["git", "clone", "--depth", "1", source.url, "repo"], tmpDir).pipe(
         Effect.catchAll((e) => {
           Console.warn(`  Failed to clone: ${e.message}`);
           return Effect.succeed("");
@@ -200,7 +197,7 @@ const syncSource = (
       );
 
       // Get latest SHA
-      const newSha = yield* exec("git rev-parse HEAD", `${tmpDir}/repo`).pipe(
+      const newSha = yield* runCommand(["git", "rev-parse", "HEAD"], `${tmpDir}/repo`).pipe(
         Effect.catchAll(() => Effect.succeed(""))
       );
 
@@ -223,7 +220,6 @@ const syncSource = (
       }
 
       // Update each tracked path
-      const paths = source.paths || [];
       for (const trackedPath of paths) {
         const srcPath = path.join(tmpDir, "repo", trackedPath);
         const skillName = path.basename(trackedPath);

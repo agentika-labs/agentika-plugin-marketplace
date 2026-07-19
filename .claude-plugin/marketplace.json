@@ -75,6 +75,26 @@
       ]
     },
     {
+      "name": "hermes-tweet",
+      "source": "./plugins/hermes-tweet",
+      "description": "Native Hermes Agent X/Twitter plugin for read-first research workflows and approval-gated actions.",
+      "version": "0.1.8",
+      "author": {
+        "name": "Xquik"
+      },
+      "homepage": "https://github.com/Xquik-dev/hermes-tweet#readme",
+      "repository": "https://github.com/Xquik-dev/hermes-tweet",
+      "license": "MIT",
+      "keywords": [
+        "hermes-agent",
+        "twitter",
+        "x",
+        "social-media",
+        "research",
+        "automation"
+      ]
+    },
+    {
       "name": "humanika",
       "source": "./plugins/humanika",
       "description": "Detect and fix AI writing patterns to make text sound like it was written by a real person with opinions, personality, and specific knowledge.",

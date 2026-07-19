@@ -10,6 +10,7 @@ Plugins for Claude Code. Each one adds skills, hooks, or agent definitions that 
 | [clip](plugins/clip/) | Copy clean text to clipboard without terminal formatting artifacts |
 | [deslop](plugins/deslop/) | Detect and remove AI-generated code patterns (slop) from your branch |
 | [grepika](plugins/grepika/) | Token-efficient codebase exploration with trigram indexing and FTS5 search |
+| [hermes-tweet](plugins/hermes-tweet/) | Hermes Agent X/Twitter research workflows with approval-gated actions |
 | [humanika](plugins/humanika/) | Detect and fix AI writing patterns so text sounds human-written |
 | [jj](plugins/jj/) | JJ (Jujutsu) version control with Git colocation and parallel workspaces |
 | [notify](plugins/notify/) | macOS desktop notifications for Claude Code lifecycle events |
