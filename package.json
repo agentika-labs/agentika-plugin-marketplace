@@ -12,6 +12,7 @@
     "@effect/platform-bun": "^0.50.0"
   },
   "scripts": {
+    "test": "bun test scripts/lib/git-source.test.ts",
     "validate": "bun run scripts/validate.ts",
     "generate-lock": "bun run scripts/generate-lock.ts",
     "validate-lock": "bun run scripts/validate-lock.ts --strict",

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-04-04T18:35:50.632Z",
+  "generated": "2026-06-14T00:28:27.358Z",
   "skills": {
     "plugins/change-journal/skills/change-journal": "internal",
     "plugins/clip/skills/clip": "internal",
@@ -14,6 +14,7 @@
     "plugins/grepika/skills/investigate": "internal",
     "plugins/grepika/skills/learn-codebase": "internal",
     "plugins/grepika/skills/study": "internal",
+    "plugins/hermes-tweet/skills/hermes-tweet": "internal",
     "plugins/humanika/skills/humanika": "internal",
     "plugins/jj/skills/jj": "internal",
     "plugins/prompt-engineering/skills/socratic-reasoning": "internal"

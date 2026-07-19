@@ -19,6 +19,12 @@ import { Effect, Console } from "effect";
 import { FileSystem, Path } from "@effect/platform";
 import { BunContext, BunRuntime } from "@effect/platform-bun";
 import type { ExternalSkillSource } from "./lib/types";
+import {
+  isSafeRepositorySubpath,
+  isValidSkillName,
+  parseRepositoryUrl,
+  runCommand,
+} from "./lib/git-source";
 
 const ROOT = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
 const EXTERNAL_DIR = `${ROOT}/plugins/external`;
@@ -50,50 +56,6 @@ const parseArgs = (): ParsedArgs | null => {
 
   return { repoUrl, pathInRepo, customName };
 };
-
-/**
- * Parse org and repo name from a Git URL.
- */
-const parseRepoUrl = (url: string): { org: string; repo: string } | null => {
-  // Handle HTTPS URLs: https://github.com/org/repo or https://github.com/org/repo.git
-  const httpsMatch = url.match(/https?:\/\/[^/]+\/([^/]+)\/([^/.]+)/);
-  if (httpsMatch) {
-    return { org: httpsMatch[1], repo: httpsMatch[2] };
-  }
-
-  // Handle SSH URLs: git@github.com:org/repo.git
-  const sshMatch = url.match(/git@[^:]+:([^/]+)\/([^/.]+)/);
-  if (sshMatch) {
-    return { org: sshMatch[1], repo: sshMatch[2] };
-  }
-
-  return null;
-};
-
-/**
- * Execute a shell command and return stdout.
- */
-const exec = (cmd: string, cwd?: string): Effect.Effect<string, Error, never> =>
-  Effect.tryPromise({
-    try: async () => {
-      const proc = Bun.spawn(["sh", "-c", cmd], {
-        cwd,
-        stdout: "pipe",
-        stderr: "pipe",
-      });
-
-      const exitCode = await proc.exited;
-      const stdout = await new Response(proc.stdout).text();
-      const stderr = await new Response(proc.stderr).text();
-
-      if (exitCode !== 0) {
-        throw new Error(`Command failed: ${cmd}\n${stderr}`);
-      }
-
-      return stdout.trim();
-    },
-    catch: (e) => new Error(String(e)),
-  });
 
 /**
  * Copy directory recursively.
@@ -158,10 +120,21 @@ const main = Effect.gen(function* () {
   const { repoUrl, pathInRepo, customName } = args;
 
   // Parse repo URL
-  const repoInfo = parseRepoUrl(repoUrl);
+  const repoInfo = parseRepositoryUrl(repoUrl);
   if (!repoInfo) {
     yield* Console.error(`Invalid repository URL: ${repoUrl}`);
     return yield* Effect.fail(new Error("Invalid repository URL"));
+  }
+
+  if (!isSafeRepositorySubpath(pathInRepo)) {
+    yield* Console.error(`Invalid repository path: ${pathInRepo}`);
+    return yield* Effect.fail(new Error("Invalid repository path"));
+  }
+
+  const skillName = customName || path.basename(pathInRepo);
+  if (!isValidSkillName(skillName)) {
+    yield* Console.error(`Invalid skill name: ${skillName}`);
+    return yield* Effect.fail(new Error("Invalid skill name"));
   }
 
   yield* Console.log(`Adding external skill from ${repoUrl}`);
@@ -177,10 +150,10 @@ const main = Effect.gen(function* () {
   try {
     // Clone repository (shallow clone for speed)
     yield* Console.log(`\nCloning repository...`);
-    yield* exec(`git clone --depth 1 "${repoUrl}" repo`, tmpDir);
+    yield* runCommand(["git", "clone", "--depth", "1", repoUrl, "repo"], tmpDir);
 
     // Get current commit SHA
-    const sha = yield* exec("git rev-parse HEAD", `${tmpDir}/repo`);
+    const sha = yield* runCommand(["git", "rev-parse", "HEAD"], `${tmpDir}/repo`);
     yield* Console.log(`  SHA: ${sha.slice(0, 7)}`);
 
     // Check if path exists
@@ -196,7 +169,6 @@ const main = Effect.gen(function* () {
 
     // Determine destination directory
     const destDir = path.join(EXTERNAL_DIR, repoInfo.org, repoInfo.repo);
-    const skillName = customName || path.basename(pathInRepo);
     const destSkillDir = path.join(destDir, "skills", skillName);
 
     yield* Console.log(`\nCopying to ${destSkillDir}...`);
